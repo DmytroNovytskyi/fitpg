@@ -1,56 +1,70 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://thymeleaf.org"
+      layout:decorate="~{layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
+      xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create user</title>
+    <title th:text="#{users.create.title}"></title>
 </head>
 <body class="d-flex">
 <main class="flex-shrink-0">
-    <section layout:fragment="body" class="py-5 min-vh-100">
+    <section class="py-5 min-vh-100" layout:fragment="body">
         <div class="container">
             <div class="text-center mb-5">
-                <h1 class="fw-bolder">Create user</h1>
+                <h1 class="fw-bolder" th:text="#{users.create.form.title}"></h1>
             </div>
-            <form role="form" th:method="post" th:action="@{/users/create}" th:object="${user}">
+            <form id="users-create-form" role="form" th:action="@{/users/create}" th:method="post" th:object="${user}">
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <input id="username"
+                    <label for="username" th:text="#{users.create.form.username}"></label>
+                    <input class="form-control"
+                           id="username"
                            name="username"
                            th:field="*{username}"
-                           type="text"
-                           class="form-control"
-                           placeholder="Enter username">
-                    <p th:if="${#fields.hasErrors('username')}" class="text-danger" th:errors="*{username}"></p>
+                           th:placeholder="#{users.create.form.username.placeholder}"
+                           type="text">
+                    <div class="text-danger" th:errors="*{username}" th:if="${#fields.hasErrors('username')}"></div>
+                    <div class="text-danger d-none" id="users-create-username-not-null"
+                         th:text="#{users.username.notNull}" th:unless="${#fields.hasErrors('username')}"></div>
+                    <div class="text-danger d-none" id="users-create-username-pattern"
+                         th:text="#{users.username.pattern}" th:unless="${#fields.hasErrors('username')}"></div>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input id="email"
+                    <label for="email" th:text="#{users.create.form.email}"></label>
+                    <input class="form-control"
+                           id="email"
                            name="email"
                            th:field="*{email}"
-                           type="text"
-                           class="form-control"
-                           placeholder="Enter email">
-                    <p th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}"></p>
+                           th:placeholder="#{users.create.form.email.placeholder}"
+                           type="text">
+                    <div class="text-danger" th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></div>
+                    <div class="text-danger d-none" id="users-create-email-not-null"
+                         th:text="#{users.email.notNull}" th:unless="${#fields.hasErrors('email')}"></div>
+                    <div class="text-danger d-none" id="users-create-email-pattern"
+                         th:text="#{users.email.pattern}" th:unless="${#fields.hasErrors('email')}"></div>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="password">Password</label>
-                    <div class="input-group" id="show_hide_password">
-                        <input id="password"
+                    <label for="password" th:text="#{users.create.form.password}"></label>
+                    <div class="input-group" id="show-hide-password">
+                        <input class="form-control"
+                               id="password"
                                name="password"
                                th:field="*{password}"
-                               type="password"
-                               class="form-control"
-                               placeholder="Enter password">
+                               th:placeholder="#{users.create.form.password.placeholder}"
+                               type="password">
                         <div class="input-group-text">
-                            <a href=""><i id="togglePassword" class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                            <a href=""><i aria-hidden="true" class="fa fa-eye-slash" id="togglePassword"></i></a>
                         </div>
                     </div>
-                    <p th:if="${#fields.hasErrors('password')}" class="text-danger" th:errors="*{password}"></p>
+                    <div class="text-danger" th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></div>
+                    <div class="text-danger d-none" id="users-create-password-not-null"
+                         th:text="#{users.password.notNull}" th:unless="${#fields.hasErrors('password')}"></div>
+                    <div class="text-danger d-none" id="users-create-password-pattern"
+                         th:text="#{users.password.pattern}" th:unless="${#fields.hasErrors('password')}"></div>
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <a class="btn btn-danger" href="#" role="button" th:href="@{/users}"
+                   th:text="#{users.create.form.cancel}"></a>
+                <button class="btn btn-primary" th:text="#{users.create.form.create}" type="submit"></button>
             </form>
         </div>
     </section>
