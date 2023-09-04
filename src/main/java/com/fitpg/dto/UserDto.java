@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+import java.util.Set;
+
 /**
  * Data transfer object for User entity.
  */
@@ -60,4 +62,10 @@ public class UserDto {
     @Pattern(message = "{users.password.pattern}",
             regexp = PASSWORD_REGEX)
     private String password;
+
+    /**
+     * User roles. Must be null on create.
+     */
+    @NotNull(message = "{users.roles.null}", groups = OnCreate.class)
+    private Set<String> roles;
 }

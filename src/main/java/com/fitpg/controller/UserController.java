@@ -1,24 +1,32 @@
 package com.fitpg.controller;
 
 import com.fitpg.dto.UserDto;
-import com.fitpg.validation.group.OnCreate;
+import com.fitpg.service.UserService;
 import com.fitpg.validation.group.OnUpdate;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * This interface defines controller interface for managing users.
+ * Defines controller for managing users.
  */
 @Validated
+@Controller
 @RequestMapping("/users")
-public interface UserController {
+@RequiredArgsConstructor
+public class UserController {
+    private final static String SORT_BY_REGEX = "id|username|email";
+    private final static String ORDER_REGEX = "asc|desc";
 
-    String SORT_BY_REGEX = "id|username|email";
-    String ORDER_REGEX = "asc|desc";
+    /**
+     * The UserService object that will be used for managing users.
+     */
+    private final UserService userService;
 
     /**
      * Retrieves a sorted and paginated list of users
@@ -30,17 +38,20 @@ public interface UserController {
      * @return a page of users sorted and filtered according to the specified parameters
      */
     @GetMapping
-    String getSortedPage(@RequestParam(value = "page", defaultValue = "0")
-                         @Min(value = 0, message = "{users.getSortedPage.page.min}") int page,
-                         @RequestParam(value = "size", defaultValue = "5")
-                         @Min(value = 1, message = "{users.getSortedPage.size.min}") int size,
-                         @RequestParam(value = "sortBy", defaultValue = "id")
-                         @Pattern(regexp = SORT_BY_REGEX,
-                                 message = "{users.getSortedPage.sortBy.pattern}") String sortBy,
-                         @RequestParam(value = "order", defaultValue = "asc")
-                         @Pattern(regexp = ORDER_REGEX,
-                                 message = "{users.getSortedPage.order.pattern}") String order,
-                         Model model);
+    public String getSortedPage(@RequestParam(value = "page", defaultValue = "0")
+                                @Min(value = 0, message = "{users.getSortedPage.page.min}") int page,
+                                @RequestParam(value = "size", defaultValue = "5")
+                                @Min(value = 1, message = "{users.getSortedPage.size.min}") int size,
+                                @RequestParam(value = "sortBy", defaultValue = "id")
+                                @Pattern(regexp = SORT_BY_REGEX,
+                                        message = "{users.getSortedPage.sortBy.pattern}") String sortBy,
+                                @RequestParam(value = "order", defaultValue = "asc")
+                                @Pattern(regexp = ORDER_REGEX,
+                                        message = "{users.getSortedPage.order.pattern}") String order,
+                                Model model) {
+        model.addAttribute("page", userService.getSortedPage(page, size, sortBy, order));
+        return "users-list";
+    }
 
     /**
      * Displays create form page.
@@ -48,7 +59,11 @@ public interface UserController {
      * @return create user form
      */
     @GetMapping("/create")
-    String create(Model model);
+    public String createPage(Model model) {
+        UserDto user = new UserDto();
+        model.addAttribute("user", user);
+        return "users-create";
+    }
 
     /**
      * Creates a new user.
@@ -57,8 +72,14 @@ public interface UserController {
      * @return redirects to users page
      */
     @PostMapping("/create")
-    String create(@ModelAttribute("user") @Validated(OnCreate.class) UserDto user,
-                  BindingResult bindingResult, Model model);
+    public String create(UserDto user, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", user);
+            return "users-create";
+        }
+        userService.create(user);
+        return "redirect:/users";
+    }
 
     /**
      * Displays update form page.
@@ -67,19 +88,31 @@ public interface UserController {
      * @return update user form
      */
     @GetMapping("/{id}")
-    String update(@Validated @PathVariable("id") @Min(value = 1, message = "{users.update.id.min}") long id,
-                  Model model);
+    public String updatePage(@Validated @PathVariable("id") @Min(value = 1, message = "{users.update.id.min}") long id,
+                             Model model) {
+        model.addAttribute("user", userService.getById(id));
+        return "users-update";
+    }
 
     /**
      * Updates an existing user.
      *
+     * @param id   the ID of the user to update
      * @param user the user to update
      * @return redirects to users page
      */
     @PutMapping("/{id}")
-    String update(@Validated @PathVariable("id") @Min(value = 1, message = "{users.update.id.min}") long id,
-                  @ModelAttribute("user") @Validated(OnUpdate.class) UserDto user,
-                  BindingResult bindingResult, Model model);
+    public String update(@Validated @PathVariable("id") @Min(value = 1, message = "{users.update.id.min}") long id,
+                         @ModelAttribute("user") @Validated(OnUpdate.class) UserDto user,
+                         BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            user.setUsername(userService.getById(id).getUsername());
+            model.addAttribute("user", user);
+            return "users-update";
+        }
+        userService.update(user);
+        return "redirect:/users";
+    }
 
     /**
      * Deletes a user with the specified ID.
@@ -88,5 +121,8 @@ public interface UserController {
      * @return redirects to users page
      */
     @DeleteMapping("/{id}")
-    String delete(@PathVariable("id") @Min(value = 1, message = "{users.delete.id.min}") long id);
+    public String delete(@PathVariable("id") @Min(value = 1, message = "{users.delete.id.min}") long id) {
+        userService.deleteById(id);
+        return "redirect:/users";
+    }
 }

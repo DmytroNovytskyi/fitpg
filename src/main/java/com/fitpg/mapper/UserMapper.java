@@ -1,24 +1,31 @@
 package com.fitpg.mapper;
 
 import com.fitpg.dto.UserDto;
+import com.fitpg.model.Role;
 import com.fitpg.model.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import com.fitpg.repository.RoleRepository;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A mapper interface for converting between User and UserDto objects.
  * Also allows to map present fields for User objects.
  */
-@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface UserMapper {
+@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        componentModel = "spring")
+public abstract class UserMapper {
 
     /**
      * An instance of the mapper.
      */
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+    public static UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+
+    @Autowired
+    protected RoleRepository roleRepository;
 
     /**
      * Converts a User object to a UserDto object ignoring password.
@@ -27,7 +34,8 @@ public interface UserMapper {
      * @return The corresponding UserDto object
      */
     @Mapping(target = "password", ignore = true)
-    UserDto mapUserDto(User user);
+    @Mapping(target = "roles", qualifiedByName = "rolesToStrings")
+    public abstract UserDto mapUserDto(User user);
 
     /**
      * Converts a UserDto object to a User object.
@@ -35,7 +43,8 @@ public interface UserMapper {
      * @param userDto The UserDto object to convert
      * @return The corresponding User object
      */
-    User mapUser(UserDto userDto);
+    @Mapping(target = "roles", qualifiedByName = "stringsToRoles")
+    public abstract User mapUser(UserDto userDto);
 
     /**
      * Copies the present fields of a User object from another User object.
@@ -43,5 +52,15 @@ public interface UserMapper {
      * @param toUser   The User object to copy the fields to
      * @param fromUser The User object to copy the fields from
      */
-    void mapPresentFields(@MappingTarget User toUser, User fromUser);
+    public abstract void mapPresentFields(@MappingTarget User toUser, User fromUser);
+
+    @Named("rolesToStrings")
+    protected Set<String> mapRolesToStrings(Set<Role> roles) {
+        return roles.stream().map(Role::getName).collect(Collectors.toSet());
+    }
+
+    @Named("stringsToRoles")
+    protected Set<Role> mapStringsToRoles(Set<String> roles) {
+        return roleRepository.findAllByNameIn(roles);
+    }
 }
