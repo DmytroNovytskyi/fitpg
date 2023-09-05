@@ -74,7 +74,7 @@ $('#users-update-form').on('submit', function (event) {
     event.preventDefault();
     const emailValue = $('#email').val().trim();
     const passwordValue = $('#password').val().trim();
-    let emailValid = true;
+    let emailValid = false;
     let passwordValid = false;
 
     const emailNotNullMessage = $('#users-update-email-not-null');
@@ -99,6 +99,88 @@ $('#users-update-form').on('submit', function (event) {
     }
 
     if (emailValid && passwordValid) {
+        this.submit();
+    }
+});
+
+//Client-side register form validation
+$('#register-form').on('submit', function (event) {
+    event.preventDefault();
+    const usernameValue = $('#username').val().trim();
+    const emailValue = $('#email').val().trim();
+    const passwordValue = $('#password').val().trim();
+    let usernameValid = false;
+    let emailValid = false;
+    let passwordValid = false;
+
+    const usernameNotNullMessage = $('#register-username-not-null');
+    const usernamePatternMessage = $('#register-username-pattern');
+    const emailNotNullMessage = $('#register-email-not-null');
+    const emailPatternMessage = $('#register-email-pattern');
+    const passwordNotNullMessage = $('#register-password-not-null');
+    const passwordPatternMessage = $('#register-password-pattern');
+    usernameNotNullMessage.addClass('d-none');
+    usernamePatternMessage.addClass('d-none');
+    emailNotNullMessage.addClass('d-none');
+    emailPatternMessage.addClass('d-none');
+    passwordNotNullMessage.addClass('d-none');
+    passwordPatternMessage.addClass('d-none');
+
+    if (usernameValue === '') {
+        usernameNotNullMessage.removeClass('d-none');
+    } else if (!usernameRegex.test(usernameValue)) {
+        usernamePatternMessage.removeClass('d-none');
+    } else {
+        usernameValid = true;
+    }
+
+    if (emailValue === '') {
+        emailNotNullMessage.removeClass('d-none');
+    } else if (!emailRegex.test(emailValue)) {
+        emailPatternMessage.removeClass('d-none');
+    } else {
+        emailValid = true;
+    }
+
+    if (passwordValue === '') {
+        passwordNotNullMessage.removeClass('d-none');
+    } else if (!passwordRegex.test(passwordValue)) {
+        passwordPatternMessage.removeClass('d-none');
+    } else {
+        passwordValid = true;
+    }
+
+    if (usernameValid && emailValid && passwordValid) {
+        this.submit();
+    }
+});
+
+//Client-side login form validation
+$('#login-form').on('submit', function (event) {
+    event.preventDefault();
+    const usernameValue = $('#username').val().trim();
+    const passwordValue = $('#password').val().trim();
+    let usernameValid = false;
+    let passwordValid = false;
+
+    const usernameNotNullMessage = $('#login-username-not-null');
+    const passwordNotNullMessage = $('#login-password-not-null');
+    usernameNotNullMessage.addClass('d-none');
+    passwordNotNullMessage.addClass('d-none');
+
+    if (usernameValue === '') {
+        usernameNotNullMessage.removeClass('d-none');
+    } else {
+        usernameValid = true;
+    }
+
+    if (passwordValue === '') {
+        passwordNotNullMessage.removeClass('d-none');
+    } else {
+        passwordValid = true;
+    }
+
+    if (usernameValid && passwordValid) {
         this.submit();
     }
 });

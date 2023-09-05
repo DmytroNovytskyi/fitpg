@@ -5,79 +5,66 @@
       xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{users.create.title}"></title>
+    <title th:text="#{register.title}"></title>
 </head>
 <body class="d-flex">
 <main class="flex-shrink-0">
     <section class="py-5 min-vh-100" layout:fragment="body">
         <div class="container">
             <div class="text-center mb-5">
-                <h1 class="fw-bolder" th:text="#{users.create.form.title}"></h1>
+                <h1 class="fw-bolder" th:text="#{register.form.title}"></h1>
             </div>
-            <form id="users-create-form" role="form" th:action="@{/users/create}" th:method="post" th:object="${user}">
+            <form id="register-form" role="form" th:action="@{/register}" th:method="post" th:object="${user}">
                 <div class="form-group">
-                    <label for="username" th:text="#{users.create.form.username}"></label>
+                    <label for="username" th:text="#{register.form.username}"></label>
                     <input class="form-control"
                            id="username"
                            name="username"
                            th:field="*{username}"
-                           th:placeholder="#{users.create.form.username.placeholder}"
+                           th:placeholder="#{register.form.username.placeholder}"
                            type="text">
                     <div class="text-danger" th:errors="*{username}" th:if="${#fields.hasErrors('username')}"></div>
-                    <div class="text-danger d-none" id="users-create-username-not-null"
+                    <div class="text-danger d-none" id="register-username-not-null"
                          th:text="#{users.username.notNull}" th:unless="${#fields.hasErrors('username')}"></div>
-                    <div class="text-danger d-none" id="users-create-username-pattern"
+                    <div class="text-danger d-none" id="register-username-pattern"
                          th:text="#{users.username.pattern}" th:unless="${#fields.hasErrors('username')}"></div>
                 </div>
                 <div class="form-group">
-                    <label for="email" th:text="#{users.create.form.email}"></label>
+                    <label for="email" th:text="#{register.form.email}"></label>
                     <input class="form-control"
                            id="email"
                            name="email"
                            th:field="*{email}"
-                           th:placeholder="#{users.create.form.email.placeholder}"
+                           th:placeholder="#{register.form.email.placeholder}"
                            type="text">
                     <div class="text-danger" th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></div>
-                    <div class="text-danger d-none" id="users-create-email-not-null"
+                    <div class="text-danger d-none" id="register-email-not-null"
                          th:text="#{users.email.notNull}" th:unless="${#fields.hasErrors('email')}"></div>
-                    <div class="text-danger d-none" id="users-create-email-pattern"
+                    <div class="text-danger d-none" id="register-email-pattern"
                          th:text="#{users.email.pattern}" th:unless="${#fields.hasErrors('email')}"></div>
                 </div>
-                <div class="form-group">
-                    <label for="roles" th:text="#{users.create.form.roles}"></label>
-                    <select class="form-control selectpicker"
-                            id="roles"
-                            multiple
-                            name="roles"
-                            th:field="*{roles}"
-                            th:title="#{users.update.form.roles.placeholder}">
-                        <div th:each="role : ${roles}">
-                            <option th:text="${role}" th:value="${role}"></option>
-                        </div>
-                    </select>
-                </div>
                 <div class="form-group mb-3">
-                    <label for="password" th:text="#{users.create.form.password}"></label>
+                    <label for="password" th:text="#{register.form.password}"></label>
                     <div class="input-group" id="show-hide-password">
                         <input class="form-control"
                                id="password"
                                name="password"
                                th:field="*{password}"
-                               th:placeholder="#{users.create.form.password.placeholder}"
+                               th:placeholder="#{register.form.password.placeholder}"
                                type="password">
                         <div class="input-group-text">
                             <a href=""><i aria-hidden="true" class="fa fa-eye-slash" id="togglePassword"></i></a>
                         </div>
                     </div>
                     <div class="text-danger" th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></div>
-                    <div class="text-danger d-none" id="users-create-password-not-null"
+                    <div class="text-danger d-none" id="register-password-not-null"
                          th:text="#{users.password.notNull}" th:unless="${#fields.hasErrors('password')}"></div>
-                    <div class="text-danger d-none" id="users-create-password-pattern"
+                    <div class="text-danger d-none" id="register-password-pattern"
                          th:text="#{users.password.pattern}" th:unless="${#fields.hasErrors('password')}"></div>
                 </div>
-                <a class="btn btn-danger" href="#" role="button" th:href="@{/users}"
-                   th:text="#{users.create.form.cancel}"></a>
-                <button class="btn btn-primary" th:text="#{users.create.form.create}" type="submit"></button>
+                <a class="btn btn-danger" href="#" role="button" th:href="@{/login}"
+                   th:text="#{register.form.login}"></a>
+                <button class="btn btn-primary" th:text="#{register.form.register}" type="submit"></button>
             </form>
         </div>
     </section>

@@ -4,7 +4,9 @@ import com.fitpg.dto.UserDto;
 import com.fitpg.exception.UserAlreadyExistsException;
 import com.fitpg.exception.UserNotFoundException;
 import com.fitpg.mapper.UserMapper;
-import com.fitpg.model.User;
+import com.fitpg.model.Role;
+import com.fitpg.model.UserEntity;
+import com.fitpg.repository.RoleRepository;
 import com.fitpg.repository.UserRepository;
 import com.fitpg.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -23,7 +28,12 @@ public class UserServiceImpl implements UserService {
     /**
      * The UserRepository object that will be used to interact with users in database.
      */
+
+    private final UserMapper userMapper;
+
     private final UserRepository userRepository;
+
+    private final RoleRepository roleRepository;
 
     /**
      * Retrieves a user with the specified ID.
@@ -35,8 +45,18 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDto getById(long id) {
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-        return UserMapper.INSTANCE.mapUserDto(user);
+        UserEntity user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return userMapper.mapUserDto(user);
+    }
+
+    /**
+     * Retrieves all user roles.
+     *
+     * @return set of all roles
+     */
+    @Override
+    public Set<String> getAllRoles() {
+        return roleRepository.findAll().stream().map(Role::getName).collect(Collectors.toSet());
     }
 
     /**
@@ -53,7 +73,7 @@ public class UserServiceImpl implements UserService {
     public Page<UserDto> getSortedPage(int page, int size, String sortBy, String order) {
         Sort sort = order.equals(ORDER_DESCENDING) ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        return userRepository.findAll(pageable).map(UserMapper.INSTANCE::mapUserDto);
+        return userRepository.findAll(pageable).map(userMapper::mapUserDto);
     }
 
     /**
@@ -66,11 +86,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDto create(UserDto userDto) {
-        User user = UserMapper.INSTANCE.mapUser(userDto);
+        UserEntity user = userMapper.mapUser(userDto);
         if (userRepository.existsByUsernameOrEmail(user.getUsername(), user.getEmail())) {
             throw new UserAlreadyExistsException();
         }
-        return UserMapper.INSTANCE.mapUserDto(userRepository.save(user));
+        return userMapper.mapUserDto(userRepository.save(user));
     }
 
     /**
@@ -84,16 +104,16 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDto update(UserDto userDto) {
-        User updating = UserMapper.INSTANCE.mapUser(userDto);
-        User persisted = userRepository.findById(updating.getId()).orElseThrow(UserNotFoundException::new);
+        UserEntity updating = userMapper.mapUser(userDto);
+        UserEntity persisted = userRepository.findById(updating.getId()).orElseThrow(UserNotFoundException::new);
 
         String updatingEmail = updating.getEmail() == null ? persisted.getEmail() : updating.getEmail();
         if (userRepository.existsByEmailAndIdIsNot(updatingEmail, persisted.getId())) {
             throw new UserAlreadyExistsException();
         }
 
-        UserMapper.INSTANCE.mapPresentFields(persisted, updating);
-        return UserMapper.INSTANCE.mapUserDto(userRepository.save(persisted));
+        userMapper.mapPresentFields(persisted, updating);
+        return userMapper.mapUserDto(userRepository.save(persisted));
     }
 
     /**
@@ -105,7 +125,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteById(long id) {
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        UserEntity user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         userRepository.delete(user);
     }
 }

@@ -1,9 +1,11 @@
 package com.fitpg.repository;
 
-import com.fitpg.model.User;
+import com.fitpg.model.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     /**
      * Checks if a user exists in the repository by their username or email.
@@ -22,4 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return true if the user exists, false otherwise
      */
     boolean existsByEmailAndIdIsNot(String email, Long id);
+
+    Optional<UserEntity> findByUsername(String username);
 }

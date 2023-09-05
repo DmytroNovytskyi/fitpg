@@ -20,7 +20,7 @@ public class Workout {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
-    private User user;
+    private UserEntity user;
     @Column(nullable = false)
     private Date date;
     @Column(nullable = false)

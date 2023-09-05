@@ -21,7 +21,7 @@ public class Role {
     private String name;
     @ManyToMany(mappedBy = "roles")
     @ToString.Exclude
-    private Set<User> users;
+    private Set<UserEntity> users;
 
     /**
      * Checks if the specified object is equal to this role.

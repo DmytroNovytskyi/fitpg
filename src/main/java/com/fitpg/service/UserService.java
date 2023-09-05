@@ -3,6 +3,8 @@ package com.fitpg.service;
 import com.fitpg.dto.UserDto;
 import org.springframework.data.domain.Page;
 
+import java.util.Set;
+
 /**
  * Service used in manipulations with User entity.
  */
@@ -15,6 +17,13 @@ public interface UserService {
      * @return the user with the specified ID
      */
     UserDto getById(long id);
+
+    /**
+     * Retrieves all user roles.
+     *
+     * @return set of all roles
+     */
+    Set<String> getAllRoles();
 
     /**
      * Retrieves a sorted and paginated list of users

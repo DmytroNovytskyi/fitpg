@@ -2,6 +2,7 @@ package com.fitpg.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fitpg.validation.group.OnCreate;
+import com.fitpg.validation.group.OnRegister;
 import com.fitpg.validation.group.OnUpdate;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
@@ -66,6 +67,6 @@ public class UserDto {
     /**
      * User roles. Must be null on create.
      */
-    @NotNull(message = "{users.roles.null}", groups = OnCreate.class)
+    @Null(message = "{users.roles.null}", groups = OnRegister.class)
     private Set<String> roles;
 }

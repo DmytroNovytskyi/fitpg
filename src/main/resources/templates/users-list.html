@@ -25,6 +25,7 @@
                         <th th:text="#{users.list.table.id}"></th>
                         <th th:text="#{users.list.table.username}"></th>
                         <th th:text="#{users.list.table.email}"></th>
+                        <th th:text="#{users.list.table.roles}"></th>
                         <th th:text="#{users.list.table.edit}"></th>
                         <th th:text="#{users.list.table.delete}"></th>
                     </tr>
@@ -34,6 +35,7 @@
                         <td th:text="${user.id}"></td>
                         <td th:text="${user.username}"></td>
                         <td th:text="${user.email}"></td>
+                        <td th:text="${user.roles}"></td>
                         <td>
                             <a class="btn btn-primary" th:href="@{users/{id}(id=${user.id})}"
                                th:text="#{users.list.table.edit}"></a>
