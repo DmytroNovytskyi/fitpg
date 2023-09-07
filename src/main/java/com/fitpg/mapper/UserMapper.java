@@ -17,7 +17,8 @@ import java.util.stream.Collectors;
  * A mapper interface for converting between User and UserDto objects.
  * Also allows to map present fields for User objects.
  */
-@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, componentModel = "spring")
+@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        componentModel = "spring")
 public abstract class UserMapper {
 
     @Autowired

@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -12,12 +13,23 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class ExerciseName {
+public class ExerciseInfo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "exercise_infos_muscle_groups",
+            joinColumns = @JoinColumn(name = "exercise_info_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "muscle_group_id", referencedColumnName = "id")
+    )
+    @ToString.Exclude
+    private Set<MuscleGroup> muscleGroups;
 
     /**
      * Checks if the specified object is equal to this exercise name.
@@ -29,8 +41,8 @@ public class ExerciseName {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        ExerciseName exerciseName = (ExerciseName) o;
-        return id != null && Objects.equals(id, exerciseName.id);
+        ExerciseInfo exerciseInfo = (ExerciseInfo) o;
+        return id != null && Objects.equals(id, exerciseInfo.id);
     }
 
     /**

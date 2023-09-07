@@ -1,6 +1,5 @@
 package com.fitpg.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fitpg.validation.group.OnCreate;
 import com.fitpg.validation.group.OnRegister;
 import com.fitpg.validation.group.OnUpdate;
@@ -15,7 +14,6 @@ import java.util.Set;
  * Data transfer object for User entity.
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
 
     /**
@@ -36,7 +34,7 @@ public class UserDto {
     /**
      * User's unique identifier. Must be null on create and not null on update.
      */
-    @Null(message = "{users.id.null}", groups = OnCreate.class)
+    @Null(message = "{users.id.null}", groups = {OnCreate.class, OnRegister.class})
     @NotNull(message = "{users.id.notNull}", groups = OnUpdate.class)
     private Long id;
 
@@ -44,14 +42,14 @@ public class UserDto {
      * User's username. Must be not null and valid format on create and null on update.
      */
     @Null(message = "{users.username.null}", groups = OnUpdate.class)
-    @NotNull(message = "{users.username.notNull}", groups = OnCreate.class)
+    @NotNull(message = "{users.username.notNull}", groups = {OnCreate.class, OnRegister.class})
     @Pattern(message = "{users.username.pattern}", regexp = USERNAME_REGEX)
     private String username;
 
     /**
      * User's email address. Must be not null and valid email format on create.
      */
-    @NotNull(message = "{users.email.notNull}", groups = OnCreate.class)
+    @NotNull(message = "{users.email.notNull}", groups = {OnCreate.class, OnRegister.class})
     @Pattern(message = "{users.email.pattern}",
             regexp = EMAIL_REGEX)
     private String email;
@@ -59,7 +57,7 @@ public class UserDto {
     /**
      * User password. Must be not null and valid password format on create.
      */
-    @NotNull(message = "{users.password.notNull}", groups = OnCreate.class)
+    @NotNull(message = "{users.password.notNull}", groups = {OnCreate.class, OnRegister.class})
     @Pattern(message = "{users.password.pattern}",
             regexp = PASSWORD_REGEX)
     private String password;

@@ -13,17 +13,22 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 public class ExerciseSet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private Exercise exercise;
+
     @Column(nullable = false)
     private Double weight;
+
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
     private Unit unit;
+
     @Column(nullable = false)
     private Integer repetitions;
 

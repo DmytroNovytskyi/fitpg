@@ -15,14 +15,18 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 public class Workout {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private UserEntity user;
+
     @Column(nullable = false)
     private Date date;
+
     @Column(nullable = false)
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude

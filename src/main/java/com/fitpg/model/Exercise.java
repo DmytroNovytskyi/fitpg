@@ -14,21 +14,24 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 public class Exercise {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private Workout workout;
+
     @ManyToOne
-    private MuscleGroup muscleGroup;
-    @ManyToOne
-    private ExerciseName exerciseName;
+    @JoinColumn(nullable = false)
+    private ExerciseInfo exerciseInfo;
+
     @OrderColumn(nullable = false)
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<ExerciseSet> exerciseSets;
-    @Column
+
     private String note;
 
     /**

@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,11 +14,17 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 public class MuscleGroup {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @ManyToMany(mappedBy = "muscleGroups")
+    @ToString.Exclude
+    private Set<ExerciseInfo> exercises;
 
     /**
      * Checks if the specified object is equal to this muscle group.
