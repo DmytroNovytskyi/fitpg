@@ -65,7 +65,7 @@ public class UserController {
     public String createPage(Model model) {
         UserDto user = new UserDto();
         model.addAttribute("user", user);
-        model.addAttribute("roles", userService.getAllRoles());
+        model.addAttribute("allRoles", userService.getAllRoles());
         return "users-create";
     }
 
@@ -80,7 +80,7 @@ public class UserController {
                          BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("user", user);
-            model.addAttribute("roles", userService.getAllRoles());
+            model.addAttribute("allRoles", userService.getAllRoles());
             return "users-create";
         }
         userService.create(user);
@@ -97,7 +97,7 @@ public class UserController {
     public String updatePage(@Validated @PathVariable("id") @Min(value = 1, message = "{users.update.id.min}") long id,
                              Model model) {
         model.addAttribute("user", userService.getById(id));
-        model.addAttribute("roles", userService.getAllRoles());
+        model.addAttribute("allRoles", userService.getAllRoles());
         return "users-update";
     }
 
@@ -115,7 +115,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             user.setUsername(userService.getById(id).getUsername());
             model.addAttribute("user", user);
-            model.addAttribute("roles", userService.getAllRoles());
+            model.addAttribute("allRoles", userService.getAllRoles());
             return "users-update";
         }
         userService.update(user);

@@ -184,3 +184,32 @@ $('#login-form').on('submit', function (event) {
         this.submit();
     }
 });
+
+//Exercise select filter by muscle groups
+$('#muscleGroups').on('change', function () {
+    const selectedMuscleGroups = $.map($('#muscleGroups option:selected'), function (val) {
+        return val.innerHTML;
+    });
+    $('#exerciseInfo option').each(function () {
+        const attribute = $(this).attr('muscleGroups');
+        if (attribute !== undefined) {
+            $(this).hide();
+            const muscleGroups = attribute.replace('[', '').replace(']', '').split(',');
+            if (muscleGroups.some(m => selectedMuscleGroups.includes(m))) {
+                $(this).show();
+            }
+        }
+    });
+    const selected = $('#exerciseInfo :selected');
+    if (selected.css('display') === 'none') {
+        selected.removeAttr('selected')
+    }
+    const select = $('select#exerciseInfo');
+    select.selectpicker('destroy');
+    select.selectpicker();
+})
+
+//Client-side exercise edit modal form validation
+$('#exercise-update-form').on('submit', function () {
+
+})

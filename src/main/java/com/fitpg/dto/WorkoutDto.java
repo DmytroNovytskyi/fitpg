@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Null;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Data transfer object for Workout entity.
@@ -24,5 +24,5 @@ public class WorkoutDto {
     private Date date;
 
     @NullOrNotEmpty(message = "{workout.exercises.notEmpty}", groups = OnUpdate.class)
-    private Set<ExerciseDto> exercises;
+    private List<ExerciseDto> exercises;
 }

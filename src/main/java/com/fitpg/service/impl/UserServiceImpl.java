@@ -50,9 +50,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Retrieves all user roles.
+     * Retrieves all user allRoles.
      *
-     * @return set of all roles
+     * @return set of all allRoles
      */
     @Override
     public Set<String> getAllRoles() {

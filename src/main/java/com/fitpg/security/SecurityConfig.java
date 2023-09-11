@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -25,19 +25,23 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable()
-                .authorizeRequests()
-                .requestMatchers("/login", "/register", "/users", "/css/**", "/js/**")
-                .permitAll()
-                .and()
+        httpSecurity
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                        .requestMatchers("/users/**")
+                        .hasAuthority("ADMIN")
+                        .requestMatchers("/workouts/**", "/exercises/**")
+                        .hasAuthority("USER")
+                        .requestMatchers("/login", "/logout", "/register", "/home", "/error", "/css/**", "/js/**")
+                        .permitAll())
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/users")
                         .loginProcessingUrl("/login")
-                        .failureUrl("/login?error=true")
-                        .permitAll())
-                .logout(logout -> logout.
-                        logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll());
+                        .defaultSuccessUrl("/home", true)
+                        .failureUrl("/login?error=true"))
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .deleteCookies("JSESSIONID"));
         return httpSecurity.build();
     }
 

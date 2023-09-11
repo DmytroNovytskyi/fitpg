@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{exercises.update.title}"></title>
+</head>
+<body class="d-flex">
+<main class="flex-shrink-0">
+    <section class="py-5 min-vh-100" layout:fragment="body">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h1 class="fw-bolder" th:text="#{exercises.update.form.title}"></h1>
+            </div>
+            <form id="exercises-update-form" role="form" th:action="@{/exercises/{id}(id=${exercise.id})}"
+                  th:method="put"
+                  th:object="${exercise}">
+                <input th:field="*{id}" type="hidden">
+                <div class="form-group">
+                    <label for="muscleGroups" th:text="#{exercises.update.form.muscleGroups}"></label>
+                    <select class="form-control selectpicker"
+                            id="muscleGroups"
+                            multiple
+                            th:field="*{exerciseInfo.muscleGroups}"
+                            th:title="#{exercises.update.form.muscleGroups.placeholder}">
+                        <div th:each="muscleGroup : ${allMuscleGroups}">
+                            <option th:text="${muscleGroup.name}" th:value="${muscleGroup.name}"></option>
+                        </div>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exerciseInfo" th:text="#{exercises.update.form.exerciseInfo}"></label>
+                    <select class="form-control selectpicker exerciseInfo"
+                            id="exerciseInfo"
+                            name="exerciseInfo"
+                            th:title="#{exercises.update.form.exerciseInfo.placeholder}"
+                            th:field="*{exerciseInfo.id}">
+                        <div th:each="exerciseInfo : ${allExerciseInfos}">
+                            <option th:text="${exerciseInfo.key.name}" th:value="${exerciseInfo.key.id}"
+                                    th:muscleGroups="${exerciseInfo.key.muscleGroups}"
+                                    th:styleappend="${exerciseInfo.value ? '' : 'display: none;'}"></option>
+                        </div>
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="note" th:text="#{exercises.update.form.note}"></label>
+                    <div class="input-group">
+                        <input class="form-control"
+                               id="note"
+                               name="note"
+                               th:field="*{note}"
+                               th:placeholder="#{exercises.update.form.note.placeholder}"
+                               type="text">
+                    </div>
+                </div>
+                <a class="btn btn-danger" href="#" role="button" th:href="@{/workouts}"
+                   th:text="#{exercises.update.form.cancel}"></a>
+                <button class="btn btn-primary" th:text="#{exercises.update.form.update}" type="submit"></button>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -5,8 +5,8 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -27,10 +27,10 @@ public class Workout {
     @Column(nullable = false)
     private Date date;
 
-    @Column(nullable = false)
+    @OrderColumn(nullable = false)
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private Set<Exercise> exercises;
+    private List<Exercise> exercises;
 
     /**
      * Checks if the specified object is equal to this workout.

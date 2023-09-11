@@ -2,7 +2,7 @@
 <html lang="en"
       layout:decorate="~{layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title th:text="#{users.create.title}"></title>
@@ -50,8 +50,8 @@
                             multiple
                             name="roles"
                             th:field="*{roles}"
-                            th:title="#{users.update.form.roles.placeholder}">
-                        <div th:each="role : ${roles}">
+                            th:title="#{users.create.form.roles.placeholder}">
+                        <div th:each="role : ${allRoles}">
                             <option th:text="${role}" th:value="${role}"></option>
                         </div>
                     </select>

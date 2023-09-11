@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{workouts.list.title}"></title>
+</head>
+<body class="d-flex">
+<main class="flex-shrink-0">
+    <section class="py-5 min-vh-100" layout:fragment="body">
+        <div class="container px-5 my-5">
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-6">
+                    <div class="text-center mb-5">
+                        <h1 class="fw-bolder" th:text="#{workouts.list.table.title}"></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row gx-5">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th th:text="#{workouts.list.date}"></th>
+                        <th th:text="#{workouts.list.muscleGroups}"></th>
+                        <th th:text="#{workouts.list.exercises}"></th>
+                        <th th:text="#{workouts.list.sets}"></th>
+                        <th th:text="#{workouts.list.note}"></th>
+                        <th th:text="#{workouts.list.actions}"></th>
+                        <th th:text="#{workouts.list.table.delete}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="workout : ${page}">
+                        <tr th:each="exercise, i : ${workout.exercises}">
+                            <td th:if="${i.index == 0}"
+                                th:text="${#dates.format(workout.date, 'dd-MM-yyyy')}"
+                                th:rowspan="${workout.exercises.size()}"></td>
+                            <td>
+                                <table>
+                                    <tr th:each="muscleGroup : ${exercise.exerciseInfo.muscleGroups}">
+                                        <td th:text="${muscleGroup}"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td th:text=" ${exercise.exerciseInfo.name}"></td>
+                            <td>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td th:each="set : ${exercise.exerciseSets}"
+                                            th:text="${set.repetitions} + 'x' + ${set.weight}
+                                        + ' ' + ${#strings.toLowerCase(set.unit)}"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td th:text="${exercise.note}"></td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <a class="btn btn-primary"
+                                               th:href="@{exercises/{id}(id=${exercise.id})}"
+                                               th:text="#{workouts.list.table.exercise.edit}"></a>
+                                        </td>
+                                        <td>
+                                            <form role="form"
+                                                  th:action="@{/exercises/{id}(id=${exercise.id})}"
+                                                  th:method="delete">
+                                                <button class="btn btn-primary"
+                                                        th:text="#{workouts.list.table.exercise.delete}"
+                                                        type="submit"></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td th:if="${i.index == 0}"
+                                th:rowspan="${workout.exercises.size()}">
+                                <form role="form" th:action="@{/workouts/{id}(id=${workout.id})}"
+                                      th:method="delete">
+                                    <button class="btn btn-primary" th:text="#{workouts.list.table.delete}"
+                                            type="submit"></button>
+                                </form>
+                            </td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+            <a class="btn btn-primary" role="button" th:href="@{/workouts/create}"
+               th:text="#{workouts.list.table.create}"></a>
+        </div>
+    </section>
+</main>
+</body>
+</html>
