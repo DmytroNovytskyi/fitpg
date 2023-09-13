@@ -1,9 +1,12 @@
 package com.fitpg.dto;
 
 import com.fitpg.validation.group.OnCreate;
+import com.fitpg.validation.group.OnExercise;
 import com.fitpg.validation.group.OnUpdate;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
+import jakarta.validation.groups.ConvertGroup;
 import lombok.Data;
 
 import java.util.List;
@@ -18,10 +21,11 @@ public class ExerciseDto {
     @NotNull(message = "{exercise.id.notNull}", groups = OnUpdate.class)
     private Long id;
 
-    @NotNull(message = "{exercise.exerciseInfo.notNull}", groups = OnCreate.class)
+    @Valid
+    @ConvertGroup(from = OnUpdate.class, to = OnExercise.class)
     private ExerciseInfoDto exerciseInfo;
 
-    @NotNull(message = "{exercise.exerciseSets.notNull}", groups = OnCreate.class)
+    @Valid
     private List<ExerciseSetDto> exerciseSets;
 
     private String note;

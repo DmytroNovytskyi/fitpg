@@ -27,7 +27,7 @@ public class Exercise {
     @JoinColumn(nullable = false)
     private ExerciseInfo exerciseInfo;
 
-    @OrderColumn(nullable = false)
+    @OrderColumn
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<ExerciseSet> exerciseSets;

@@ -209,7 +209,118 @@ $('#muscleGroups').on('change', function () {
     select.selectpicker();
 })
 
-//Client-side exercise edit modal form validation
-$('#exercise-update-form').on('submit', function () {
+//Add exercise set button
+$('.add-set-btn').on('click', function () {
+    const copy = $('.add-set-template').first()
+        .clone()
+        .removeClass('add-set-template');
+    const prevIndex = $('#sets-form').children().last().find('.index').text();
+    const index = prevIndex === '' ? 0 : Number(prevIndex) + 1;
+    copy.find('.index').text(index);
+    const repetitions = copy.find('.template-repetitions');
+    repetitions.attr({
+        id: repetitions.attr('id').replace('INDEX', index), name: repetitions.attr('name').replace('INDEX', index)
+    })
+    repetitions.removeClass('template-repetitions');
+    const weight = copy.find('.template-weight');
+    weight.attr({
+        id: weight.attr('id').replace('INDEX', index), name: weight.attr('name').replace('INDEX', index)
+    })
+    weight.removeClass('template-weight');
+    const selectUnit = copy.find('select.template-unit');
+    selectUnit.attr({
+        id: selectUnit.attr('id').replace('INDEX', index), name: selectUnit.attr('name').replace('INDEX', index)
+    })
+    selectUnit.removeClass('template-unit');
+    const select = copy.find('select');
+    select.parent().find('button').remove();
+    select.selectpicker();
+    copy.appendTo('#sets-form').show();
+})
 
+//Remove exercise set button
+$(document).on('click', '.remove-set-btn', function () {
+    let next = $(this).parent().parent().next();
+    while (next.length !== 0) {
+        const indexElem = next.find('.index');
+        const nexIndex = Number(indexElem.text()) - 1;
+        indexElem.text(nexIndex);
+        const id = next.find('.id-input');
+        if (id.length !== 0) {
+            id.attr({
+                id: id.attr('id').replace(/[0-9]+/, nexIndex), name: id.attr('name').replace(/[0-9]+/, nexIndex)
+            })
+        }
+        const repetitions = next.find('.repetitions-input');
+        repetitions.attr({
+            id: repetitions.attr('id').replace(/[0-9]+/, nexIndex),
+            name: repetitions.attr('name').replace(/[0-9]+/, nexIndex)
+        })
+        const weight = next.find('.weight-input');
+        weight.attr({
+            id: weight.attr('id').replace(/[0-9]+/, nexIndex), name: weight.attr('name').replace(/[0-9]+/, nexIndex)
+        })
+        const select = next.find('select');
+        select.attr({
+            id: select.attr('id').replace(/[0-9]+/, nexIndex), name: select.attr('name').replace(/[0-9]+/, nexIndex)
+        })
+        select.parent().find('button').remove();
+        select.selectpicker('destroy');
+        select.selectpicker();
+        next = next.next();
+    }
+    $(this).closest('.form-group').remove();
+})
+
+//Client-side exercise edit modal form validation
+$('#exercises-update-form').on('submit', function (event) {
+    event.preventDefault();
+    const exerciseInfoIdValue = $('#exerciseInfo :selected').attr('value');
+
+    let exerciseInfoId = true;
+    let exerciseSetRepetitions = true;
+    let exerciseSetWeights = true;
+    let exerciseSetUnits = true;
+
+    const exerciseInfoIdNotNullMessage = $('#exercises-update-exercise-info-id-not-null');
+    const exerciseSetRepetitionsNotNullMessages = $('.exercises-update-exercise-set-repetitions-not-null');
+    const exerciseSetWeightNotNullMessages = $('.exercises-update-exercise-set-weight-not-null');
+    const exerciseSetUnitNotNullMessages = $('.exercises-update-exercise-set-unit-not-null');
+    exerciseInfoIdNotNullMessage.addClass('d-none');
+    exerciseSetRepetitionsNotNullMessages.each(function () {
+        $(this).addClass('d-none');
+    });
+    exerciseSetWeightNotNullMessages.each(function () {
+        $(this).addClass('d-none');
+    });
+    exerciseSetUnitNotNullMessages.each(function () {
+        $(this).addClass('d-none');
+    });
+
+    if (exerciseInfoIdValue === '') {
+        exerciseInfoIdNotNullMessage.removeClass('d-none');
+        exerciseInfoId = false;
+    }
+    $('#sets-form .repetitions-input').each(function (i) {
+        if ($(this).val() === '') {
+            $(exerciseSetRepetitionsNotNullMessages[i]).removeClass('d-none');
+            exerciseSetRepetitions = false;
+        }
+    })
+    $('#sets-form .weight-input').each(function (i) {
+        if ($(this).val() === '') {
+            $(exerciseSetWeightNotNullMessages[i]).removeClass('d-none');
+            exerciseSetWeights = false;
+        }
+    })
+    $('#sets-form select :selected').each(function (i) {
+        if ($(this).val() === '') {
+            $(exerciseSetUnitNotNullMessages[i]).removeClass('d-none');
+            exerciseSetUnits = false;
+        }
+    })
+
+    if (exerciseInfoId && exerciseSetRepetitions && exerciseSetWeights && exerciseSetUnits) {
+        this.submit();
+    }
 })
