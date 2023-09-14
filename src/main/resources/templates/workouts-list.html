@@ -34,7 +34,12 @@
                     <tbody>
                     <th:block th:each="workout : ${page}">
                         <tr th:if="${workout.exercises.isEmpty()}">
-                            <td th:text="${#dates.format(workout.date, 'dd-MM-yyyy')}"></td>
+                            <td>
+                                <div class="col" th:text="${#dates.format(workout.date, 'dd-MM-yyyy')}"></div>
+                                <a class="btn btn-primary col" th:href="@{/exercises/create/{id}(id=${workout.id})}">
+                                    <i class="fa fa-plus-circle"></i>
+                                </a>
+                            </td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -50,8 +55,12 @@
                         </tr>
                         <tr th:each="exercise, i : ${workout.exercises}">
                             <td th:if="${i.index == 0}"
-                                th:text="${#dates.format(workout.date, 'dd-MM-yyyy')}"
-                                th:rowspan="${workout.exercises.size()}"></td>
+                                th:rowspan="${workout.exercises.size()}">
+                                <div class="col" th:text="${#dates.format(workout.date, 'dd-MM-yyyy')}"></div>
+                                <a class="btn btn-primary col" th:href="@{/exercises/create/{id}(id=${workout.id})}">
+                                    <i class="fa fa-plus-circle"></i>
+                                </a>
+                            </td>
                             <td>
                                 <table>
                                     <tr th:each="muscleGroup : ${exercise.exerciseInfo.muscleGroups}">

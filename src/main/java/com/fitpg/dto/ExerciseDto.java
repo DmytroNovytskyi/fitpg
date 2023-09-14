@@ -23,6 +23,7 @@ public class ExerciseDto {
 
     @Valid
     @ConvertGroup(from = OnUpdate.class, to = OnExercise.class)
+    @ConvertGroup(from = OnCreate.class, to = OnExercise.class)
     private ExerciseInfoDto exerciseInfo;
 
     @Valid

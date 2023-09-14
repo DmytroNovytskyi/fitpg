@@ -21,7 +21,7 @@ public class WorkoutDto {
     @NotNull(message = "{workout.id.notNull}", groups = OnUpdate.class)
     private Long id;
 
-    @DateTimeFormat(pattern = "dd-mm-yyyy")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     @NotNull(message = "{workout.date.notNull}", groups = OnCreate.class)
     private Date date;
 

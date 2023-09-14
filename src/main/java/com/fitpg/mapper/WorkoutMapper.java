@@ -2,12 +2,14 @@ package com.fitpg.mapper;
 
 import com.fitpg.dto.ExerciseDto;
 import com.fitpg.dto.WorkoutDto;
+import com.fitpg.model.Exercise;
 import com.fitpg.model.Workout;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,6 +23,16 @@ public abstract class WorkoutMapper {
     public abstract Workout mapWorkout(WorkoutDto workoutDto);
 
     public abstract void mapPresentFields(@MappingTarget Workout toWorkout, Workout fromWorkout);
+
+    @AfterMapping
+    protected void linkExercises(@MappingTarget Workout workout) {
+        List<Exercise> exercises = workout.getExercises();
+        if (exercises != null) {
+            exercises.forEach(s -> s.setWorkout(workout));
+        } else {
+            workout.setExercises(new ArrayList<>());
+        }
+    }
 
     @AfterMapping
     protected void removeNullFromExercises(@MappingTarget WorkoutDto workoutDto) {

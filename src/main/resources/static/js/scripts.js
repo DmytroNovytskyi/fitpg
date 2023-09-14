@@ -272,7 +272,7 @@ $(document).on('click', '.remove-set-btn', function () {
     $(this).closest('.form-group').remove();
 })
 
-//Client-side exercise edit modal form validation
+//Client-side exercise edit form validation
 $('#exercises-update-form').on('submit', function (event) {
     event.preventDefault();
     const exerciseInfoIdValue = $('#exerciseInfo :selected').attr('value');
@@ -286,6 +286,59 @@ $('#exercises-update-form').on('submit', function (event) {
     const exerciseSetRepetitionsNotNullMessages = $('.exercises-update-exercise-set-repetitions-not-null');
     const exerciseSetWeightNotNullMessages = $('.exercises-update-exercise-set-weight-not-null');
     const exerciseSetUnitNotNullMessages = $('.exercises-update-exercise-set-unit-not-null');
+    exerciseInfoIdNotNullMessage.addClass('d-none');
+    exerciseSetRepetitionsNotNullMessages.each(function () {
+        $(this).addClass('d-none');
+    });
+    exerciseSetWeightNotNullMessages.each(function () {
+        $(this).addClass('d-none');
+    });
+    exerciseSetUnitNotNullMessages.each(function () {
+        $(this).addClass('d-none');
+    });
+
+    if (exerciseInfoIdValue === '') {
+        exerciseInfoIdNotNullMessage.removeClass('d-none');
+        exerciseInfoId = false;
+    }
+    $('#sets-form .repetitions-input').each(function (i) {
+        if ($(this).val() === '') {
+            $(exerciseSetRepetitionsNotNullMessages[i]).removeClass('d-none');
+            exerciseSetRepetitions = false;
+        }
+    })
+    $('#sets-form .weight-input').each(function (i) {
+        if ($(this).val() === '') {
+            $(exerciseSetWeightNotNullMessages[i]).removeClass('d-none');
+            exerciseSetWeights = false;
+        }
+    })
+    $('#sets-form select :selected').each(function (i) {
+        if ($(this).val() === '') {
+            $(exerciseSetUnitNotNullMessages[i]).removeClass('d-none');
+            exerciseSetUnits = false;
+        }
+    })
+
+    if (exerciseInfoId && exerciseSetRepetitions && exerciseSetWeights && exerciseSetUnits) {
+        this.submit();
+    }
+})
+
+//Client-side exercise create form validation
+$('#exercises-create-form').on('submit', function (event) {
+    event.preventDefault();
+    const exerciseInfoIdValue = $('#exerciseInfo :selected').attr('value');
+
+    let exerciseInfoId = true;
+    let exerciseSetRepetitions = true;
+    let exerciseSetWeights = true;
+    let exerciseSetUnits = true;
+
+    const exerciseInfoIdNotNullMessage = $('#exercises-create-exercise-info-id-not-null');
+    const exerciseSetRepetitionsNotNullMessages = $('.exercises-create-exercise-set-repetitions-not-null');
+    const exerciseSetWeightNotNullMessages = $('.exercises-create-exercise-set-weight-not-null');
+    const exerciseSetUnitNotNullMessages = $('.exercises-create-exercise-set-unit-not-null');
     exerciseInfoIdNotNullMessage.addClass('d-none');
     exerciseSetRepetitionsNotNullMessages.each(function () {
         $(this).addClass('d-none');

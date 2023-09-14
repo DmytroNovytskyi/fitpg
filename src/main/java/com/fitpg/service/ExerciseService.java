@@ -6,7 +6,7 @@ public interface ExerciseService {
 
     ExerciseDto getById(long id);
 
-    ExerciseDto create(ExerciseDto exerciseDto);
+    ExerciseDto create(ExerciseDto exerciseDto, long workoutId);
 
     ExerciseDto update(ExerciseDto exerciseDto);
 

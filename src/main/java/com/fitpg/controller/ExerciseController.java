@@ -1,12 +1,13 @@
 package com.fitpg.controller;
 
 import com.fitpg.dto.ExerciseDto;
+import com.fitpg.dto.MuscleGroupDto;
 import com.fitpg.model.Unit;
 import com.fitpg.service.ExerciseInfoService;
 import com.fitpg.service.ExerciseService;
 import com.fitpg.service.MuscleGroupService;
 import com.fitpg.service.util.FitPGUtil;
-import com.fitpg.validation.group.OnExercise;
+import com.fitpg.validation.group.OnCreate;
 import com.fitpg.validation.group.OnUpdate;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Validated
 @Controller
@@ -28,9 +32,42 @@ public class ExerciseController {
 
     private final ExerciseInfoService exerciseInfoService;
 
-    @GetMapping("/{id}")
-    public String updatePage(@Validated @PathVariable("id") @Min(value = 1, message = "{exercises.update.id.min}") long id,
+    @GetMapping("/create/{workoutId}")
+    public String createPage(@Validated @PathVariable("workoutId") @Min(value = 1, message = "{exercises.create.workoutId.min}") long workoutId,
                              Model model) {
+        List<MuscleGroupDto> muscleGroups = muscleGroupService.getAll();
+        model.addAttribute("exercise", new ExerciseDto());
+        model.addAttribute("allMuscleGroups", muscleGroups);
+        model.addAttribute("allExerciseInfos",
+                FitPGUtil.mapExerciseToShow(exerciseInfoService.getAll(),
+                        muscleGroups.stream().map(MuscleGroupDto::getName).collect(Collectors.toSet())));
+        model.addAttribute("allUnits", Unit.values());
+        model.addAttribute("workoutId", workoutId);
+        return "exercises-create";
+    }
+
+    @PostMapping("/create/{workoutId}")
+    public String create(@Validated @PathVariable("workoutId") @Min(value = 1, message = "{exercises.create.workoutId.min}") long workoutId,
+                         @ModelAttribute("exercise") @Validated(OnCreate.class) ExerciseDto exercise,
+                         BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("exercise", exercise);
+            model.addAttribute("allMuscleGroups", muscleGroupService.getAll());
+            model.addAttribute("allExerciseInfos",
+                    FitPGUtil.mapExerciseToShow(exerciseInfoService.getAll(),
+                            exercise.getExerciseInfo().getMuscleGroups()));
+            model.addAttribute("allUnits", Unit.values());
+            model.addAttribute("workoutId", workoutId);
+            return "exercises-create";
+        }
+        exerciseService.create(exercise, workoutId);
+        return "redirect:/workouts";
+    }
+
+    @GetMapping("/{id}")
+    public String updatePage(
+            @Validated @PathVariable("id") @Min(value = 1, message = "{exercises.update.id.min}") long id,
+            Model model) {
         ExerciseDto exercise = exerciseService.getById(id);
         model.addAttribute("exercise", exercise);
         model.addAttribute("allMuscleGroups", muscleGroupService.getAll());
@@ -42,9 +79,10 @@ public class ExerciseController {
     }
 
     @PutMapping("/{id}")
-    public String update(@Validated @PathVariable("id") @Min(value = 1, message = "{exercises.update.id.min}") long id,
-                         @ModelAttribute("exercise") @Validated({OnUpdate.class, OnExercise.class}) ExerciseDto exercise,
-                         BindingResult bindingResult, Model model) {
+    public String update(
+            @Validated @PathVariable("id") @Min(value = 1, message = "{exercises.update.id.min}") long id,
+            @ModelAttribute("exercise") @Validated(OnUpdate.class) ExerciseDto exercise,
+            BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("exercise", exercise);
             model.addAttribute("allMuscleGroups", muscleGroupService.getAll());

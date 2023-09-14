@@ -27,7 +27,7 @@ public class Workout {
     @Column(nullable = false)
     private Date date;
 
-    @OrderColumn(nullable = false)
+    @OrderColumn
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<Exercise> exercises;
