@@ -1,7 +1,9 @@
 package com.fitpg.controller;
 
+import com.fitpg.dto.WorkoutDto;
 import com.fitpg.security.SecurityUtil;
 import com.fitpg.service.WorkoutService;
+import com.fitpg.validation.group.OnCreate;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +37,15 @@ public class WorkoutController {
                                         message = "{workouts.getSortedPage.order.pattern}") String order,
                                 Model model) {
         model.addAttribute("page",
-                workoutService.getSortedPageForUser(page, size, sortBy, order,
-                        SecurityUtil.getSessionUser()));
+                workoutService.getSortedPageForUser(page, size, sortBy, order, SecurityUtil.getSessionUser()));
+        model.addAttribute("workout", new WorkoutDto());
         return "workouts-list";
+    }
+
+    @PostMapping("/create")
+    public String create(@ModelAttribute("workout") @Validated(OnCreate.class) WorkoutDto workout) {
+        workoutService.create(workout);
+        return "redirect:/workouts";
     }
 
     @DeleteMapping("/{id}")

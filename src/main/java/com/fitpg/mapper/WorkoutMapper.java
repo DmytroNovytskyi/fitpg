@@ -1,5 +1,6 @@
 package com.fitpg.mapper;
 
+import com.fitpg.dto.ExerciseDto;
 import com.fitpg.dto.WorkoutDto;
 import com.fitpg.model.Workout;
 import org.mapstruct.AfterMapping;
@@ -7,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
+import java.util.List;
 import java.util.Objects;
 
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
@@ -22,6 +24,9 @@ public abstract class WorkoutMapper {
 
     @AfterMapping
     protected void removeNullFromExercises(@MappingTarget WorkoutDto workoutDto) {
-        workoutDto.getExercises().removeIf(Objects::isNull);
+        List<ExerciseDto> exercises = workoutDto.getExercises();
+        if (exercises != null) {
+            exercises.removeIf(Objects::isNull);
+        }
     }
 }

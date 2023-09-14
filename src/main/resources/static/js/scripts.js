@@ -324,3 +324,10 @@ $('#exercises-update-form').on('submit', function (event) {
         this.submit();
     }
 })
+
+//Workouts create datepicker
+$(function () {
+    $('#datepicker').datepicker({
+        format: "dd-mm-yyyy"
+    });
+});

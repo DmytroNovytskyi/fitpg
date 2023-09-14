@@ -4,7 +4,6 @@ import com.fitpg.dto.ExerciseDto;
 import com.fitpg.exception.ExerciseNotFoundException;
 import com.fitpg.mapper.ExerciseMapper;
 import com.fitpg.model.Exercise;
-import com.fitpg.model.Workout;
 import com.fitpg.repository.ExerciseRepository;
 import com.fitpg.repository.WorkoutRepository;
 import com.fitpg.service.ExerciseService;
@@ -48,12 +47,6 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     public void deleteById(long id) {
         Exercise exercise = exerciseRepository.findById(id).orElseThrow(ExerciseNotFoundException::new);
-        Workout workout = exercise.getWorkout();
-        workout.getExercises().remove(exercise);
-        if (workout.getExercises().isEmpty()) {
-            workoutRepository.delete(workout);
-        } else {
-            exerciseRepository.delete(exercise);
-        }
+        exerciseRepository.delete(exercise);
     }
 }

@@ -33,6 +33,21 @@
                     </thead>
                     <tbody>
                     <th:block th:each="workout : ${page}">
+                        <tr th:if="${workout.exercises.isEmpty()}">
+                            <td th:text="${#dates.format(workout.date, 'dd-MM-yyyy')}"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <form role="form" th:action="@{/workouts/{id}(id=${workout.id})}"
+                                      th:method="delete">
+                                    <button class="btn btn-primary" th:text="#{workouts.list.table.delete}"
+                                            type="submit"></button>
+                                </form>
+                            </td>
+                        </tr>
                         <tr th:each="exercise, i : ${workout.exercises}">
                             <td th:if="${i.index == 0}"
                                 th:text="${#dates.format(workout.date, 'dd-MM-yyyy')}"
@@ -88,9 +103,10 @@
                     </tbody>
                 </table>
             </div>
-            <a class="btn btn-primary" role="button" th:href="@{/workouts/create}"
+            <a class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#workouts-create-modal"
                th:text="#{workouts.list.table.create}"></a>
         </div>
+        <th:block th:replace="workouts-create-modal :: modal(${workout})"></th:block>
     </section>
 </main>
 </body>
