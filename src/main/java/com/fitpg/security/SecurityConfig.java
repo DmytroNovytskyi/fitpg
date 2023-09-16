@@ -28,7 +28,7 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/users/**")
+                        .requestMatchers("/users/**", "/exercise-infos/**", "/muscle-groups/**")
                         .hasAuthority("ADMIN")
                         .requestMatchers("/workouts/**", "/exercises/**")
                         .hasAuthority("USER")

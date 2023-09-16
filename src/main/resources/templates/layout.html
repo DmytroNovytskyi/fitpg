@@ -26,6 +26,12 @@
                 <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                     <a class="nav-link" th:href="@{/users}" th:text="#{home.ref.users}"></a>
                 </li>
+                <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+                    <a class="nav-link" th:href="@{/exercise-infos}" th:text="#{home.ref.exercises}"></a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+                    <a class="nav-link" th:href="@{/muscle-groups}" th:text="#{home.ref.muscleGroups}"></a>
+                </li>
                 <li class="nav-item" sec:authorize="hasAuthority('USER')">
                     <a class="nav-link" th:href="@{/workouts}" th:text="#{home.ref.workouts}"></a>
                 </li>

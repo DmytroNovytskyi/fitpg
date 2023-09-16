@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,6 +22,10 @@ public class ExerciseInfo {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "exerciseInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<Exercise> exercises;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(

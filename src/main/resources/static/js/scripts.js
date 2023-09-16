@@ -384,3 +384,61 @@ $(function () {
         format: "dd-mm-yyyy"
     });
 });
+
+//Client-side exercise info create form validation
+$('#exercise-infos-create-form').on('submit', function (event) {
+    event.preventDefault();
+    const exerciseInfoNameValue = $('#name').val();
+    const exerciseInfoMuscleGroups = $('#muscle-groups :selected');
+
+    let exerciseInfoNameValid = true;
+    let exerciseInfoMuscleGroupsValid = true;
+
+    const exerciseInfoNameNotNullMessage = $('#exercise-infos-create-name-not-null');
+    const exerciseInfoMuscleGroupsNotEmptyMessage = $('#exercise-infos-create-muscle-groups-not-empty');
+
+    exerciseInfoNameNotNullMessage.addClass('d-none');
+    exerciseInfoMuscleGroupsNotEmptyMessage.addClass('d-none');
+
+    if (exerciseInfoNameValue === '') {
+        exerciseInfoNameNotNullMessage.removeClass('d-none');
+        exerciseInfoNameValid = false;
+    }
+    if (exerciseInfoMuscleGroups.length === 0) {
+        exerciseInfoMuscleGroupsNotEmptyMessage.removeClass('d-none');
+        exerciseInfoMuscleGroupsValid = false;
+    }
+
+    if (exerciseInfoNameValid && exerciseInfoMuscleGroupsValid) {
+        this.submit();
+    }
+})
+
+//Client-side exercise info update form validation
+$('#exercise-infos-update-form').on('submit', function (event) {
+    event.preventDefault();
+    const exerciseInfoNameValue = $('#name').val();
+    const exerciseInfoMuscleGroups = $('#muscle-groups :selected');
+
+    let exerciseInfoNameValid = true;
+    let exerciseInfoMuscleGroupsValid = true;
+
+    const exerciseInfoNameNotNullMessage = $('#exercise-infos-update-name-not-null');
+    const exerciseInfoMuscleGroupsNotEmptyMessage = $('#exercise-infos-update-muscle-groups-not-empty');
+
+    exerciseInfoNameNotNullMessage.addClass('d-none');
+    exerciseInfoMuscleGroupsNotEmptyMessage.addClass('d-none');
+
+    if (exerciseInfoNameValue === '') {
+        exerciseInfoNameNotNullMessage.removeClass('d-none');
+        exerciseInfoNameValid = false;
+    }
+    if (exerciseInfoMuscleGroups.length === 0) {
+        exerciseInfoMuscleGroupsNotEmptyMessage.removeClass('d-none');
+        exerciseInfoMuscleGroupsValid = false;
+    }
+
+    if (exerciseInfoNameValid && exerciseInfoMuscleGroupsValid) {
+        this.submit();
+    }
+})
