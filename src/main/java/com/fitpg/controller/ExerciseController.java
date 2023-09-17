@@ -6,7 +6,6 @@ import com.fitpg.model.Unit;
 import com.fitpg.service.ExerciseInfoService;
 import com.fitpg.service.ExerciseService;
 import com.fitpg.service.MuscleGroupService;
-import com.fitpg.service.util.FitPGUtil;
 import com.fitpg.validation.group.OnCreate;
 import com.fitpg.validation.group.OnUpdate;
 import jakarta.validation.constraints.Min;
@@ -18,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Validated
 @Controller
@@ -38,9 +36,7 @@ public class ExerciseController {
         List<MuscleGroupDto> muscleGroups = muscleGroupService.getAll();
         model.addAttribute("exercise", new ExerciseDto());
         model.addAttribute("allMuscleGroups", muscleGroups);
-        model.addAttribute("allExerciseInfos",
-                FitPGUtil.mapExerciseToShow(exerciseInfoService.getAll(),
-                        muscleGroups.stream().map(MuscleGroupDto::getName).collect(Collectors.toSet())));
+        model.addAttribute("allExerciseInfos", exerciseInfoService.getAll());
         model.addAttribute("allUnits", Unit.values());
         model.addAttribute("workoutId", workoutId);
         return "exercises-create";
@@ -53,9 +49,7 @@ public class ExerciseController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("exercise", exercise);
             model.addAttribute("allMuscleGroups", muscleGroupService.getAll());
-            model.addAttribute("allExerciseInfos",
-                    FitPGUtil.mapExerciseToShow(exerciseInfoService.getAll(),
-                            exercise.getExerciseInfo().getMuscleGroups()));
+            model.addAttribute("allExerciseInfos", exerciseInfoService.getAll());
             model.addAttribute("allUnits", Unit.values());
             model.addAttribute("workoutId", workoutId);
             return "exercises-create";
@@ -71,9 +65,7 @@ public class ExerciseController {
         ExerciseDto exercise = exerciseService.getById(id);
         model.addAttribute("exercise", exercise);
         model.addAttribute("allMuscleGroups", muscleGroupService.getAll());
-        model.addAttribute("allExerciseInfos",
-                FitPGUtil.mapExerciseToShow(exerciseInfoService.getAll(),
-                        exercise.getExerciseInfo().getMuscleGroups()));
+        model.addAttribute("allExerciseInfos", exerciseInfoService.getAll());
         model.addAttribute("allUnits", Unit.values());
         return "exercises-update";
     }
@@ -86,9 +78,7 @@ public class ExerciseController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("exercise", exercise);
             model.addAttribute("allMuscleGroups", muscleGroupService.getAll());
-            model.addAttribute("allExerciseInfos",
-                    FitPGUtil.mapExerciseToShow(exerciseInfoService.getAll(),
-                            exercise.getExerciseInfo().getMuscleGroups()));
+            model.addAttribute("allExerciseInfos", exerciseInfoService.getAll());
             model.addAttribute("allUnits", Unit.values());
             return "exercises-update";
         }

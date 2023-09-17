@@ -29,7 +29,10 @@ public abstract class MuscleGroupMapper {
 
     @Named("exercisesToStrings")
     protected Set<String> exercisesToStrings(Set<ExerciseInfo> exercises) {
-        return exercises.stream().map(ExerciseInfo::getName).collect(Collectors.toSet());
+        if (exercises != null) {
+            return exercises.stream().map(ExerciseInfo::getName).collect(Collectors.toSet());
+        }
+        return null;
     }
 
     @Named("stringsToExercises")

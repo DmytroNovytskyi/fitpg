@@ -1,7 +1,9 @@
 package com.fitpg.service.impl;
 
 import com.fitpg.dto.MuscleGroupDto;
+import com.fitpg.exception.MuscleGroupNotFoundException;
 import com.fitpg.mapper.MuscleGroupMapper;
+import com.fitpg.model.MuscleGroup;
 import com.fitpg.repository.MuscleGroupRepository;
 import com.fitpg.service.MuscleGroupService;
 import lombok.RequiredArgsConstructor;
@@ -27,24 +29,34 @@ public class MuscleGroupServiceImpl implements MuscleGroupService {
     @Transactional
     @Override
     public MuscleGroupDto getById(long id) {
-        return null;
+        MuscleGroup muscleGroup = muscleGroupRepository.findById(id)
+                .orElseThrow(MuscleGroupNotFoundException::new);
+        return muscleGroupMapper.mapMuscleGroupDto(muscleGroup);
     }
 
     @Transactional
     @Override
     public MuscleGroupDto create(MuscleGroupDto muscleGroupDto) {
-        return null;
+        MuscleGroup muscleGroup = muscleGroupMapper.mapMuscleGroup(muscleGroupDto);
+        return muscleGroupMapper.mapMuscleGroupDto(muscleGroupRepository.save(muscleGroup));
     }
 
     @Transactional
     @Override
     public MuscleGroupDto update(MuscleGroupDto muscleGroupDto) {
-        return null;
+        MuscleGroup updating = muscleGroupMapper.mapMuscleGroup(muscleGroupDto);
+        MuscleGroup persisted = muscleGroupRepository.findById(updating.getId())
+                .orElseThrow(MuscleGroupNotFoundException::new);
+        muscleGroupMapper.mapPresentFields(persisted, updating);
+        return muscleGroupMapper.mapMuscleGroupDto(muscleGroupRepository.save(persisted));
     }
 
     @Transactional
     @Override
     public void deleteById(long id) {
-
+        MuscleGroup muscleGroup = muscleGroupRepository.findById(id)
+                .orElseThrow(MuscleGroupNotFoundException::new);
+        muscleGroup.clearExerciseInfosRelationship();
+        muscleGroupRepository.delete(muscleGroup);
     }
 }

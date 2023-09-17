@@ -39,9 +39,8 @@
                                 th:title="#{exercises.update.form.exerciseInfo.placeholder}"
                                 th:field="*{exerciseInfo.id}">
                             <div th:each="exerciseInfo : ${allExerciseInfos}">
-                                <option th:text="${exerciseInfo.key.name}" th:value="${exerciseInfo.key.id}"
-                                        th:muscleGroups="${exerciseInfo.key.muscleGroups}"
-                                        th:styleappend="${exerciseInfo.value ? '' : 'display: none;'}"></option>
+                                <option th:text="${exerciseInfo.name}" th:value="${exerciseInfo.id}"
+                                        th:muscleGroups="${exerciseInfo.muscleGroups}"></option>
                             </div>
                         </select>
                         <div class="text-danger" th:errors="*{exerciseInfo.id}"

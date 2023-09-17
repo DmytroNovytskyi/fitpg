@@ -186,27 +186,35 @@ $('#login-form').on('submit', function (event) {
 });
 
 //Exercise select filter by muscle groups
-$('#muscleGroups').on('change', function () {
-    const selectedMuscleGroups = $.map($('#muscleGroups option:selected'), function (val) {
-        return val.innerHTML;
-    });
-    $('#exerciseInfo option').each(function () {
-        const attribute = $(this).attr('muscleGroups');
-        if (attribute !== undefined) {
-            $(this).hide();
-            const muscleGroups = attribute.replace('[', '').replace(']', '').split(',');
-            if (muscleGroups.some(m => selectedMuscleGroups.includes(m))) {
-                $(this).show();
+$(document).ready(function () {
+    function processMuscleGroupsSelectFilter() {
+        const selectedMuscleGroups = $.map($('#muscleGroups option:selected'), function (val) {
+            return val.innerHTML;
+        });
+        $('#exerciseInfo option').each(function () {
+            const attribute = $(this).attr('muscleGroups');
+            $(this).show();
+            if (attribute !== undefined) {
+                const muscleGroups = attribute.replace('[', '').replace(']', '').split(',');
+                if (selectedMuscleGroups.length !== 0
+                    && !muscleGroups.some(m => selectedMuscleGroups.includes(m))) {
+                    $(this).hide();
+                }
             }
+        });
+        const selected = $('#exerciseInfo :selected');
+        if (selected.css('display') === 'none') {
+            selected.removeAttr('selected')
         }
-    });
-    const selected = $('#exerciseInfo :selected');
-    if (selected.css('display') === 'none') {
-        selected.removeAttr('selected')
+        const select = $('select#exerciseInfo');
+        select.selectpicker('destroy');
+        select.selectpicker();
     }
-    const select = $('select#exerciseInfo');
-    select.selectpicker('destroy');
-    select.selectpicker();
+
+    $('#muscleGroups').on('load change', function () {
+        processMuscleGroupsSelectFilter();
+    })
+    processMuscleGroupsSelectFilter();
 })
 
 //Add exercise set button
@@ -439,6 +447,48 @@ $('#exercise-infos-update-form').on('submit', function (event) {
     }
 
     if (exerciseInfoNameValid && exerciseInfoMuscleGroupsValid) {
+        this.submit();
+    }
+})
+
+//Client-side muscle group update form validation
+$('#muscle-groups-update-form').on('submit', function (event) {
+    event.preventDefault();
+    const muscleGroupNameValue = $('#name').val();
+
+    let muscleGroupNameValid = true;
+
+    const muscleGroupNameNotNullMessage = $('#muscle-groups-update-name-not-null');
+
+    muscleGroupNameNotNullMessage.addClass('d-none');
+
+    if (muscleGroupNameValue === '') {
+        muscleGroupNameNotNullMessage.removeClass('d-none');
+        muscleGroupNameValid = false;
+    }
+
+    if (muscleGroupNameValid) {
+        this.submit();
+    }
+})
+
+//Client-side muscle group update form validation
+$('#muscle-groups-create-form').on('submit', function (event) {
+    event.preventDefault();
+    const muscleGroupNameValue = $('#name').val();
+
+    let muscleGroupNameValid = true;
+
+    const muscleGroupNameNotNullMessage = $('#muscle-groups-create-name-not-null');
+
+    muscleGroupNameNotNullMessage.addClass('d-none');
+
+    if (muscleGroupNameValue === '') {
+        muscleGroupNameNotNullMessage.removeClass('d-none');
+        muscleGroupNameValid = false;
+    }
+
+    if (muscleGroupNameValid) {
         this.submit();
     }
 })

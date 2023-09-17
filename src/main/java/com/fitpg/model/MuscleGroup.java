@@ -49,4 +49,12 @@ public class MuscleGroup {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+    public void clearExerciseInfosRelationship() {
+        for (ExerciseInfo exerciseInfo :
+                exercises) {
+            exerciseInfo.getMuscleGroups().remove(this);
+        }
+        exercises.clear();
+    }
 }
