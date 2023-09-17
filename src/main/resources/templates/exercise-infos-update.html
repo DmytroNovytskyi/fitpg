@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{exerciseInfos.update.title}"></title>
+</head>
+<body class="d-flex">
+<main class="flex-shrink-0">
+    <section class="py-5 min-vh-100" layout:fragment="body">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h1 class="fw-bolder" th:text="#{exerciseInfos.update.form.title} + ' ' + ${exerciseInfo.name}"></h1>
+            </div>
+            <form id="exercise-infos-update-form" role="form" th:action="@{/exercise-infos/{id}(id=${exerciseInfo.id})}"
+                  th:method="put"
+                  th:object="${exerciseInfo}">
+                <input th:field="*{id}" type="hidden">
+                <div class="form-group mb-2">
+                    <label for="name" th:text="#{exerciseInfos.update.form.name}"></label>
+                    <input class="form-control"
+                           id="name"
+                           name="name"
+                           th:field="*{name}"
+                           th:placeholder="#{exerciseInfos.update.form.name.placeholder}"
+                           type="text">
+                    <div class="text-danger" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
+                    <div class="text-danger d-none" id="exercise-infos-update-name-not-null"
+                         th:text="#{exerciseInfo.name.notNull}" th:unless="${#fields.hasErrors('name')}"></div>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="muscle-groups" th:text="#{exerciseInfos.update.form.muscleGroups}"></label>
+                    <select class="form-control selectpicker"
+                            id="muscle-groups"
+                            name="muscleGroups"
+                            multiple
+                            th:field="*{muscleGroups}"
+                            th:title="#{exerciseInfos.update.form.muscleGroups.placeholder}">
+                        <div th:each="muscleGroup : ${allMuscleGroups}">
+                            <option th:text="${muscleGroup.name}" th:value="${muscleGroup.name}"></option>
+                        </div>
+                    </select>
+                    <div class="text-danger" th:errors="*{muscleGroups}"
+                         th:if="${#fields.hasErrors('muscleGroups')}"></div>
+                    <div class="text-danger d-none" id="exercise-infos-update-muscle-groups-not-empty"
+                         th:text="#{exerciseInfo.muscleGroups.notEmpty}"
+                         th:unless="${#fields.hasErrors('muscleGroups')}"></div>
+                </div>
+                <a class="btn btn-danger" href="#" role="button" th:href="@{/exercise-infos}"
+                   th:text="#{exerciseInfos.update.form.cancel}"></a>
+                <button class="btn btn-primary" th:text="#{exerciseInfos.update.form.update}" type="submit"></button>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{exercises.create.title}"></title>
+</head>
+<body class="d-flex">
+<main class="flex-shrink-0">
+    <section class="py-5 min-vh-100" layout:fragment="body">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h1 class="fw-bolder" th:text="#{exercises.create.form.title}"></h1>
+            </div>
+            <form id="exercises-create-form" role="form" th:action="@{/exercises/create/{id}(id=${workoutId})}"
+                  th:method="post"
+                  th:object="${exercise}">
+                <div class="row mb-2">
+                    <div class="form-group col">
+                        <label for="muscleGroups" th:text="#{exercises.create.form.muscleGroups}"></label>
+                        <select class="form-control selectpicker"
+                                id="muscleGroups"
+                                multiple
+                                th:field="*{exerciseInfo.muscleGroups}"
+                                th:title="#{exercises.create.form.muscleGroups.placeholder}">
+                            <div th:each="muscleGroup : ${allMuscleGroups}">
+                                <option th:text="${muscleGroup.name}" th:value="${muscleGroup.name}"></option>
+                            </div>
+                        </select>
+                    </div>
+                    <div class="form-group col">
+                        <label for="exerciseInfo" th:text="#{exercises.create.form.exerciseInfo}"></label>
+                        <select class="form-control selectpicker exerciseInfo"
+                                id="exerciseInfo"
+                                name="exerciseInfo"
+                                th:title="#{exercises.create.form.exerciseInfo.placeholder}"
+                                th:field="*{exerciseInfo.id}">
+                            <div th:each="exerciseInfo : ${allExerciseInfos}">
+                                <option th:text="${exerciseInfo.name}" th:value="${exerciseInfo.id}"
+                                        th:muscleGroups="${exerciseInfo.muscleGroups}"></option>
+                            </div>
+                        </select>
+                        <div class="text-danger" th:errors="*{exerciseInfo.id}"
+                             th:if="${#fields.hasErrors('exerciseInfo.id')}"></div>
+                        <div class="text-danger d-none" id="exercises-create-exercise-info-id-not-null"
+                             th:text="#{exercise.exerciseInfo.id.notNull}"
+                             th:unless="${#fields.hasErrors('exerciseInfo.id')}"></div>
+                    </div>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="sets-form" th:text="#{exercises.create.form.exerciseSets}"></label>
+                    <div class="btn btn-primary add-set-btn">
+                        <i class="fa fa-plus-circle"></i>
+                    </div>
+                    <div id="sets-form">
+                        <div th:remove="tag" th:each="set, i : ${exercise.exerciseSets}">
+                            <div class="form-group row mb-2">
+                                <div class="d-none index" th:text="${i.index}"></div>
+                                <input class="id-input" th:field="*{exerciseSets[__${i.index}__].id}" type="hidden">
+                                <div class="col">
+                                    <input class="form-control repetitions-input" type="text"
+                                           th:field="*{exerciseSets[__${i.index}__].repetitions}"
+                                           th:placeholder="#{exercises.create.form.exerciseSets.repetition.placeholder}">
+                                    <div class="text-danger" th:errors="*{exerciseSets[__${i.index}__].repetitions}"
+                                         th:if="${#fields.hasErrors('exerciseSets[' + i.index + '].repetitions')}"></div>
+                                    <div class="text-danger d-none exercises-create-exercise-set-repetitions-not-null"
+                                         th:text="#{exerciseSet.repetitions.notNull}"
+                                         th:unless="${#fields.hasErrors('exerciseSets[' + i.index + '].repetitions')}"></div>
+                                </div>
+                                <div class="col">
+                                    <input class="form-control weight-input" type="text"
+                                           th:field="*{exerciseSets[__${i.index}__].weight}"
+                                           th:placeholder="#{exercises.create.form.exerciseSets.weight.placeholder}">
+                                    <div class="text-danger" th:errors="*{exerciseSets[__${i.index}__].weight}"
+                                         th:if="${#fields.hasErrors('exerciseSets[' + i.index + '].weight')}"></div>
+                                    <div class="text-danger d-none exercises-create-exercise-set-weight-not-null"
+                                         th:text="#{exerciseSet.weight.notNull}"
+                                         th:unless="${#fields.hasErrors('exerciseSets[' + i.index + '].weight')}"></div>
+                                </div>
+                                <div class="col">
+                                    <select class="form-control selectpicker"
+                                            th:title="#{exercises.create.form.exerciseSets.unit.placeholder}"
+                                            th:field="*{exerciseSets[__${i.index}__].unit}">
+                                        <div th:each="unit : ${allUnits}">
+                                            <option th:text="${unit.name()}" th:value="${unit.name()}"></option>
+                                        </div>
+                                    </select>
+                                    <div class="text-danger" th:errors="*{exerciseSets[__${i.index}__].unit}"
+                                         th:if="${#fields.hasErrors('exerciseSets[' + i.index + '].unit')}"></div>
+                                    <div class="text-danger d-none exercises-create-exercise-set-unit-not-null"
+                                         th:text="#{exerciseSet.unit.notNull}"
+                                         th:unless="${#fields.hasErrors('exerciseSets[' + i.index + '].unit')}"></div>
+                                </div>
+                                <div class="col">
+                                    <div class="btn btn-success remove-set-btn"
+                                         th:text="#{exercises.create.form.exerciseSets.remove.button}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="note" th:text="#{exercises.create.form.note}"></label>
+                    <div class="input-group">
+                        <input class="form-control"
+                               id="note"
+                               name="note"
+                               th:field="*{note}"
+                               th:placeholder="#{exercises.create.form.note.placeholder}"
+                               type="text">
+                    </div>
+                </div>
+                <a class="btn btn-danger" href="#" role="button" th:href="@{/workouts}"
+                   th:text="#{exercises.create.form.cancel}"></a>
+                <button class="btn btn-primary" th:text="#{exercises.create.form.create}" type="submit"></button>
+            </form>
+            <div style="display: none;" class="form-group add-set-template row mb-2">
+                <div class="d-none index"></div>
+                <div class="col">
+                    <input class="form-control template-repetitions repetitions-input" type="text"
+                           id="exerciseSetsINDEX.repetitions"
+                           name="exerciseSets[INDEX].repetitions"
+                           th:placeholder="#{exercises.create.form.exerciseSets.repetition.placeholder}">
+                    <div class="text-danger d-none exercises-create-exercise-set-repetitions-not-null"
+                         th:text="#{exerciseSet.repetitions.notNull}"></div>
+                </div>
+                <div class="col">
+                    <input class="form-control template-weight weight-input" type="text"
+                           id="exerciseSetsINDEX.weight"
+                           name="exerciseSets[INDEX].weight"
+                           th:placeholder="#{exercises.create.form.exerciseSets.weight.placeholder}">
+                    <div class="text-danger d-none exercises-create-exercise-set-weight-not-null"
+                         th:text="#{exerciseSet.weight.notNull}"></div>
+                </div>
+                <div class="col">
+                    <select class="form-control selectpicker template-unit"
+                            id="exerciseSetsINDEX.unit"
+                            name="exerciseSets[INDEX].unit"
+                            th:title="#{exercises.create.form.exerciseSets.unit.placeholder}">
+                        <div th:each="unit : ${allUnits}">
+                            <option th:text="${unit.name()}" th:value="${unit.name()}"></option>
+                        </div>
+                    </select>
+                    <div class="text-danger d-none exercises-create-exercise-set-unit-not-null"
+                         th:text="#{exerciseSet.unit.notNull}"></div>
+                </div>
+                <div class="col">
+                    <div class="btn btn-success remove-set-btn"
+                         th:text="#{exercises.create.form.exerciseSets.remove.button}"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

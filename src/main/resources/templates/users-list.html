@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{users.list.title}"></title>
+</head>
+<body class="d-flex">
+<main class="flex-shrink-0">
+    <section class="py-5 min-vh-100" layout:fragment="body">
+        <div class="container px-5 my-5">
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-6">
+                    <div class="text-center mb-5">
+                        <h1 class="fw-bolder" th:text="#{users.list.table.title}"></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row gx-5">
+                <table>
+                    <thead>
+                    <tr>
+                        <th th:text="#{users.list.table.id}"></th>
+                        <th th:text="#{users.list.table.username}"></th>
+                        <th th:text="#{users.list.table.email}"></th>
+                        <th th:text="#{users.list.table.roles}"></th>
+                        <th th:text="#{users.list.table.edit}"></th>
+                        <th th:text="#{users.list.table.delete}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${page}">
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.username}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.roles}"></td>
+                        <td>
+                            <a class="btn btn-primary" th:href="@{users/{id}(id=${user.id})}"
+                               th:text="#{users.list.table.edit}"></a>
+                        </td>
+                        <td>
+                            <form role="form" th:action="@{/users/{id}(id=${user.id})}" th:method="delete">
+                                <button class="btn btn-primary" th:text="#{users.list.table.delete}"
+                                        type="submit"></button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <a class="btn btn-primary" role="button" th:href="@{/users/create}"
+               th:text="#{users.list.table.create}"></a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

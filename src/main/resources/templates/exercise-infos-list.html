@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{exerciseInfos.list.title}"></title>
+</head>
+<body class="d-flex">
+<main class="flex-shrink-0">
+    <section class="py-5 min-vh-100" layout:fragment="body">
+        <div class="container px-5 my-5">
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-6">
+                    <div class="text-center mb-5">
+                        <h1 class="fw-bolder" th:text="#{exerciseInfos.list.table.title}"></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row gx-5">
+                <table>
+                    <thead>
+                    <tr>
+                        <th th:text="#{exerciseInfos.list.table.id}"></th>
+                        <th th:text="#{exerciseInfos.list.table.name}"></th>
+                        <th th:text="#{exerciseInfos.list.table.muscleGroups}"></th>
+                        <th th:text="#{exerciseInfos.list.table.edit}"></th>
+                        <th th:text="#{exerciseInfos.list.table.delete}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="exerciseInfo : ${exerciseInfos}">
+                        <td th:text="${exerciseInfo.id}"></td>
+                        <td th:text="${exerciseInfo.name}"></td>
+                        <td th:text="${exerciseInfo.muscleGroups}"></td>
+                        <td>
+                            <a class="btn btn-primary" th:href="@{exercise-infos/{id}(id=${exerciseInfo.id})}"
+                               th:text="#{exerciseInfos.list.table.edit}"></a>
+                        </td>
+                        <td>
+                            <form role="form" th:action="@{/exercise-infos/{id}(id=${exerciseInfo.id})}"
+                                  th:method="delete">
+                                <button class="btn btn-primary" th:text="#{exerciseInfos.list.table.delete}"
+                                        type="submit"></button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <a class="btn btn-primary" role="button" th:href="@{/exercise-infos/create}"
+               th:text="#{exerciseInfos.list.table.create}"></a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

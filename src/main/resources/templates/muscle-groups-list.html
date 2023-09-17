@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{muscleGroups.list.title}"></title>
+</head>
+<body class="d-flex">
+<main class="flex-shrink-0">
+    <section class="py-5 min-vh-100" layout:fragment="body">
+        <div class="container px-5 my-5">
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-6">
+                    <div class="text-center mb-5">
+                        <h1 class="fw-bolder" th:text="#{muscleGroups.list.table.title}"></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row gx-5">
+                <table>
+                    <thead>
+                    <tr>
+                        <th th:text="#{muscleGroups.list.table.id}"></th>
+                        <th th:text="#{muscleGroups.list.table.name}"></th>
+                        <th th:text="#{muscleGroups.list.table.edit}"></th>
+                        <th th:text="#{muscleGroups.list.table.delete}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="muscleGroup : ${muscleGroups}">
+                        <td th:text="${muscleGroup.id}"></td>
+                        <td th:text="${muscleGroup.name}"></td>
+                        <td>
+                            <a class="btn btn-primary" th:href="@{muscle-groups/{id}(id=${muscleGroup.id})}"
+                               th:text="#{muscleGroups.list.table.edit}"></a>
+                        </td>
+                        <td>
+                            <form role="form" th:action="@{/muscle-groups/{id}(id=${muscleGroup.id})}"
+                                  th:method="delete">
+                                <button class="btn btn-primary" th:text="#{muscleGroups.list.table.delete}"
+                                        type="submit"></button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <a class="btn btn-primary" role="button" th:href="@{/muscle-groups/create}"
+               th:text="#{muscleGroups.list.table.create}"></a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

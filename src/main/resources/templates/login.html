@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{login.title}"></title>
+</head>
+<body class="d-flex">
+<main class="flex-shrink-0">
+    <section class="py-5 min-vh-100" layout:fragment="body">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h1 class="fw-bolder" th:text="#{login.form.title}"></h1>
+            </div>
+            <div class="alert alert-danger" th:if="${param.error}" th:text="#{login.error.login.password}"></div>
+            <div class="alert alert-success" th:if="${param.logout}" th:text="#{login.logout}"></div>
+            <form id="login-form" role="form" th:action="@{/login}" th:method="post">
+                <div class="form-group">
+                    <label for="username" th:text="#{login.form.username}"></label>
+                    <input class="form-control"
+                           id="username"
+                           name="username"
+                           th:placeholder="#{login.form.username.placeholder}"
+                           type="text">
+                    <div class="text-danger d-none" id="login-username-not-null"
+                         th:text="#{users.username.notNull}"></div>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="password" th:text="#{login.form.password}"></label>
+                    <div class="input-group" id="show-hide-password">
+                        <input class="form-control"
+                               id="password"
+                               name="password"
+                               th:placeholder="#{login.form.password.placeholder}"
+                               type="password">
+                        <div class="input-group-text">
+                            <a href=""><i aria-hidden="true" class="fa fa-eye-slash" id="togglePassword"></i></a>
+                        </div>
+                    </div>
+                    <div class="text-danger d-none" id="login-password-not-null"
+                         th:text="#{users.password.notNull}"></div>
+                </div>
+                <a class="btn btn-danger" href="#" role="button" th:href="@{/register}"
+                   th:text="#{login.form.register}"></a>
+                <button class="btn btn-primary" th:text="#{login.form.login}" type="submit" value="Log in"></button>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>

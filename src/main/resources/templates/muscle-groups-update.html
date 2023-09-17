@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{muscleGroups.update.title}"></title>
+</head>
+<body class="d-flex">
+<main class="flex-shrink-0">
+    <section class="py-5 min-vh-100" layout:fragment="body">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h1 class="fw-bolder" th:text="#{muscleGroups.update.form.title} + ' ' + ${muscleGroup.name}"></h1>
+            </div>
+            <form id="muscle-groups-update-form" role="form" th:action="@{/muscle-groups/{id}(id=${muscleGroup.id})}"
+                  th:method="put"
+                  th:object="${muscleGroup}">
+                <input th:field="*{id}" type="hidden">
+                <div class="form-group mb-2">
+                    <label for="name" th:text="#{muscleGroups.update.form.name}"></label>
+                    <input class="form-control"
+                           id="name"
+                           name="name"
+                           th:field="*{name}"
+                           th:placeholder="#{muscleGroups.update.form.name.placeholder}"
+                           type="text">
+                    <div class="text-danger" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
+                    <div class="text-danger d-none" id="muscle-groups-update-name-not-null"
+                         th:text="#{muscleGroup.name.notNull}" th:unless="${#fields.hasErrors('name')}"></div>
+                </div>
+                <a class="btn btn-danger" href="#" role="button" th:href="@{/muscle-groups}"
+                   th:text="#{muscleGroups.update.form.cancel}"></a>
+                <button class="btn btn-primary" th:text="#{muscleGroups.update.form.update}" type="submit"></button>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>

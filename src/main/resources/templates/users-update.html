@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{users.update.title}"></title>
+</head>
+<body class="d-flex">
+<main class="flex-shrink-0">
+    <section class="py-5 min-vh-100" layout:fragment="body">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h1 class="fw-bolder" th:text="#{users.update.form.title} + ' ' + ${user.username}"></h1>
+            </div>
+            <form id="users-update-form" role="form" th:action="@{/users/{id}(id=${user.id})}" th:method="put"
+                  th:object="${user}">
+                <input th:field="*{id}" type="hidden">
+                <div class="form-group">
+                    <label for="email" th:text="#{users.update.form.email}"></label>
+                    <input class="form-control"
+                           id="email"
+                           name="email"
+                           th:field="*{email}"
+                           th:placeholder="#{users.update.form.email.placeholder}"
+                           type="text">
+                    <div class="text-danger" th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></div>
+                    <div class="text-danger d-none" id="users-update-email-not-null"
+                         th:text="#{users.email.notNull}" th:unless="${#fields.hasErrors('email')}"></div>
+                    <div class="text-danger d-none" id="users-update-email-pattern"
+                         th:text="#{users.email.pattern}" th:unless="${#fields.hasErrors('email')}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="roles" th:text="#{users.update.form.roles}"></label>
+                    <select class="form-control selectpicker"
+                            id="roles"
+                            multiple
+                            name="roles"
+                            th:field="*{roles}"
+                            th:title="#{users.update.form.roles.placeholder}">
+                        <div th:each="role : ${allRoles}">
+                            <option th:text="${role}" th:value="${role}"></option>
+                        </div>
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="password" th:text="#{users.update.form.password}"></label>
+                    <div class="input-group" id="show-hide-password">
+                        <input class="form-control"
+                               id="password"
+                               name="password"
+                               th:field="*{password}"
+                               th:placeholder="#{users.update.form.password.placeholder}"
+                               type="password">
+                        <div class="input-group-text">
+                            <a href=""><i aria-hidden="true" class="fa fa-eye-slash" id="togglePassword"></i></a>
+                        </div>
+                    </div>
+                    <div class="text-danger" th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></div>
+                    <div class="text-danger d-none" id="users-update-password-pattern"
+                         th:text="#{users.password.pattern}" th:unless="${#fields.hasErrors('password')}"></div>
+                </div>
+                <a class="btn btn-danger" href="#" role="button" th:href="@{/users}"
+                   th:text="#{users.update.form.cancel}"></a>
+                <button class="btn btn-primary" th:text="#{users.update.form.update}" type="submit"></button>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>
