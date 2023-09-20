@@ -7,7 +7,7 @@ public interface WorkoutService {
 
     WorkoutDto getById(long id);
 
-    Page<WorkoutDto> getSortedPageForUser(int page, int size, String sortBy, String order, String username);
+    Page<WorkoutDto> getSortedPage(int page, int size, String sortBy, String order);
 
     WorkoutDto create(WorkoutDto workoutDto);
 

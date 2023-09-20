@@ -39,10 +39,11 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     @Transactional
     @Override
-    public Page<WorkoutDto> getSortedPageForUser(int page, int size, String sortBy, String order, String username) {
+    public Page<WorkoutDto> getSortedPage(int page, int size, String sortBy, String order) {
         Sort sort = order.equals(ORDER_DESCENDING) ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        return workoutRepository.findAllByUserUsername(pageable, username).map(workoutMapper::mapWorkoutDto);
+        return workoutRepository.findAllByUserUsername(pageable, SecurityUtil.getSessionUser())
+                .map(workoutMapper::mapWorkoutDto);
     }
 
     @Transactional

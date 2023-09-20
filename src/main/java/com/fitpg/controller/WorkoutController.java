@@ -1,7 +1,6 @@
 package com.fitpg.controller;
 
 import com.fitpg.dto.WorkoutDto;
-import com.fitpg.security.SecurityUtil;
 import com.fitpg.service.WorkoutService;
 import com.fitpg.validation.group.OnCreate;
 import jakarta.validation.constraints.Min;
@@ -37,7 +36,7 @@ public class WorkoutController {
                                         message = "{workouts.getSortedPage.order.pattern}") String order,
                                 Model model) {
         model.addAttribute("page",
-                workoutService.getSortedPageForUser(page, size, sortBy, order, SecurityUtil.getSessionUser()));
+                workoutService.getSortedPage(page, size, sortBy, order));
         model.addAttribute("workout", new WorkoutDto());
         return "workouts-list";
     }
