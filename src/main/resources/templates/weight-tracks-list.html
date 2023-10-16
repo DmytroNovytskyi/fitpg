@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{weightTracks.list.title}"></title>
+</head>
+<body class="d-flex">
+<main class="flex-shrink-0">
+    <section class="py-5 min-vh-100" layout:fragment="body">
+        <div class="container px-5 my-5">
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-6">
+                    <div class="text-center mb-5">
+                        <h1 class="fw-bolder" th:text="#{weightTracks.list.table.title}"></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row gx-5">
+                <table class="table col">
+                    <thead>
+                    <tr>
+                        <th th:text="#{weightTracks.list.table.date}"></th>
+                        <th th:text="#{weightTracks.list.table.weight}"></th>
+                        <th th:text="#{weightTracks.list.table.edit}"></th>
+                        <th th:text="#{weightTracks.list.table.delete}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="weightTrack : ${page}">
+                        <td th:text="${#dates.format(weightTrack.date, 'dd-MM-yyyy')}"></td>
+                        <td th:text="${weightTrack.weight}"></td>
+                        <td>
+                            <a class="btn btn-primary"
+                               th:href="@{weight-tracks/{id}(id=${weightTrack.id})}"
+                               th:text="#{weightTracks.list.table.edit}"></a>
+                        </td>
+                        <td>
+                            <form role="form"
+                                  th:action="@{/weight-tracks/{id}(id=${weightTrack.id})}"
+                                  th:method="delete">
+                                <button class="btn btn-primary"
+                                        th:text="#{weightTracks.list.table.delete}"
+                                        type="submit"></button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="col">
+                    <canvas id="weightTrackingChart"
+                            th:labels="${chartLabels}" th:data-sets="${chartDataSets}">
+                    </canvas>
+                </div>
+            </div>
+            <a class="btn btn-primary" role="button" th:href="@{/weight-tracks/create}"
+               th:text="#{weightTracks.list.table.create}"></a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

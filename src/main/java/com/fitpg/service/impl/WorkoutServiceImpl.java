@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class WorkoutServiceImpl implements WorkoutService {
 
-    public static final String ORDER_DESCENDING = "desc";
+    private static final String ORDER_DESCENDING = "desc";
 
     private final WorkoutMapper workoutMapper;
 

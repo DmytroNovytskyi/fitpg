@@ -492,3 +492,22 @@ $('#muscle-groups-create-form').on('submit', function (event) {
         this.submit();
     }
 })
+
+//Weight tracking chart
+$(document).ready(function () {
+    const chart = $("#weightTrackingChart");
+    const ctx = chart[0].getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chart.attr('labels').replace('[', '').replace(']', '').split(','),
+            datasets: [
+                {
+                    label: "Weight",
+                    data: chart.attr('data-sets').replace('[', '').replace(']', '').split(','),
+                    backgroundColor: 'rgba(114,53,184,0.6)'
+                }
+            ],
+        },
+    });
+})
