@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 @Validated
 @Controller
@@ -44,13 +45,7 @@ public class WeightTrackController {
                                 Model model) {
         Page<WeightTrackDto> weightTrackDtoPage = weightTrackService.getSortedPage(page, size, sortBy, order);
         model.addAttribute("page", weightTrackDtoPage);
-        model.addAttribute("chartLabels",
-                weightTrackDtoPage.stream()
-                        .map(wt -> new SimpleDateFormat(DATE_FORMAT).format(wt.getDate()))
-                        .toList());
-        model.addAttribute("chartDataSets",
-                weightTrackDtoPage.stream().map(WeightTrackDto::getWeight).toList());
-        model.addAttribute("weightTrack", new WeightTrackDto());
+        mapChartData(model, weightTrackDtoPage);
         return "weight-tracks-list";
     }
 
@@ -81,7 +76,7 @@ public class WeightTrackController {
 
     @PutMapping("/{id}")
     public String update(@Validated @PathVariable("id") @Min(value = 1, message = "{weightTracks.update.id.min}") long id,
-                         @ModelAttribute("muscleGroup") @Validated(OnUpdate.class) WeightTrackDto weightTrack,
+                         @ModelAttribute("weightTrack") @Validated(OnUpdate.class) WeightTrackDto weightTrack,
                          BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("weightTrack", weightTrack);
@@ -95,5 +90,14 @@ public class WeightTrackController {
     public String delete(@PathVariable("id") @Min(value = 1, message = "{weightTracks.delete.id.min}") long id) {
         weightTrackService.deleteById(id);
         return "redirect:/weight-tracks";
+    }
+
+    private void mapChartData(Model model, Page<WeightTrackDto> weightTrackDtoPage) {
+        List<String> chartLabels = weightTrackDtoPage.stream()
+                .map(wt -> new SimpleDateFormat(DATE_FORMAT).format(wt.getDate()))
+                .toList();
+        List<Double> chartDataSets = weightTrackDtoPage.stream().map(WeightTrackDto::getWeight).toList();
+        model.addAttribute("chartLabels", chartLabels);
+        model.addAttribute("chartDataSets", chartDataSets);
     }
 }

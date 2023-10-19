@@ -38,6 +38,9 @@
                 <li class="nav-item" sec:authorize="hasAuthority('USER')">
                     <a class="nav-link" th:href="@{/weight-tracks}" th:text="#{home.ref.weightTracks}"></a>
                 </li>
+                <li class="nav-item" sec:authorize="hasAuthority('USER')">
+                    <a class="nav-link" th:href="@{/nutrients-tracks}" th:text="#{home.ref.nutrientsTracks}"></a>
+                </li>
                 <li class="nav-item" sec:authorize="isAnonymous()">
                     <a class="nav-link" th:href="@{/register}" th:text="#{home.ref.register}"></a>
                 </li>
