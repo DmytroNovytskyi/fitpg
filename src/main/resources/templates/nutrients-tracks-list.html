@@ -20,7 +20,33 @@
             </div>
             <div class="row gx-5">
                 <div class="col d-block">
-                    <table class="table">
+                    <div class="row my-3 ps-2">
+                        <div class="col mt-2 ps-0">
+                            <nav th:replace="fragments/paging-bar :: paging-bar('/nutrients-tracks')"
+                                 th:if="${totalPages > 0}"></nav>
+                        </div>
+                        <div class="col">
+                            <form th:action="@{/nutrients-tracks}" id="pageSizeForm">
+                                <div class="input-group mt-2 justify-content-end">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="pageSize"
+                                               th:text="#{nutrientsTracks.list.table.paging.pageSize}"></label>
+                                    </div>
+                                    <select form="pageSizeForm" name="size" th:value="${pageSize}"
+                                            onchange="changePageSize()" class="size-select"
+                                            id="pageSize">
+                                        <option th:each="s : ${ {7, 30, 60, 90, 180, 365} }" th:value="${s}"
+                                                th:text="${s}" th:selected="${s == pageSize}"></option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row d-inline-block ps-2">
+                        <a class="btn btn-primary" role="button" th:href="@{/nutrients-tracks/create}"
+                           th:text="#{nutrientsTracks.list.table.create}"></a>
+                    </div>
+                    <table class="table" th:if="${nutrientsTracks.size() > 0}">
                         <thead>
                         <tr>
                             <th th:text="#{nutrientsTracks.list.table.date}"></th>
@@ -33,7 +59,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="nutrientsTrack : ${page}">
+                        <tr th:each="nutrientsTrack : ${nutrientsTracks}">
                             <td th:text="${#dates.format(nutrientsTrack.date, 'dd-MM-yyyy')}"></td>
                             <td th:text="${nutrientsTrack.fats}"></td>
                             <td th:text="${nutrientsTrack.carbohydrates}"></td>
@@ -56,8 +82,9 @@
                         </tr>
                         </tbody>
                     </table>
-                    <a class="btn btn-primary" role="button" th:href="@{/nutrients-tracks/create}"
-                       th:text="#{nutrientsTracks.list.table.create}"></a>
+                    <div th:unless="${nutrientsTracks.size() > 0}" class="text-center mb-3">
+                        <span th:text="#{nutrientsTracks.list.table.notFound}"></span>
+                    </div>
                 </div>
                 <div class="col">
                     <canvas id="caloriesTrackingChart"

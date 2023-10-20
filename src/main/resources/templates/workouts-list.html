@@ -115,7 +115,7 @@
             <a class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#workouts-create-modal"
                th:text="#{workouts.list.table.create}"></a>
         </div>
-        <th:block th:replace="workouts-create-modal :: modal(${workout})"></th:block>
+        <th:block th:replace="fragments/workouts-create-modal :: workout-create-modal(${workout})"></th:block>
     </section>
 </main>
 </body>

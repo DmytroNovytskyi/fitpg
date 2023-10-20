@@ -32,8 +32,8 @@ public class NutrientsTrackController {
     private final NutrientsTrackService nutrientsTrackService;
 
     @GetMapping
-    public String getSortedPage(@RequestParam(value = "page", defaultValue = "0")
-                                @Min(value = 0, message = "{nutrientsTrack.getSortedPage.page.min}") int page,
+    public String getSortedPage(@RequestParam(value = "page", defaultValue = "1")
+                                @Min(value = 1, message = "{nutrientsTrack.getSortedPage.page.min}") int page,
                                 @RequestParam(value = "size", defaultValue = "5")
                                 @Min(value = 1, message = "{nutrientsTrack.getSortedPage.size.min}") int size,
                                 @RequestParam(value = "sortBy", defaultValue = "date")
@@ -43,8 +43,11 @@ public class NutrientsTrackController {
                                 @Pattern(regexp = ORDER_REGEX,
                                         message = "{nutrientsTrack.getSortedPage.order.pattern}") String order,
                                 Model model) {
-        Page<NutrientsTrackDto> nutrientsTrackDtoPage = nutrientsTrackService.getSortedPage(page, size, sortBy, order);
-        model.addAttribute("page", nutrientsTrackDtoPage);
+        Page<NutrientsTrackDto> nutrientsTrackDtoPage = nutrientsTrackService.getSortedPage(page - 1, size, sortBy, order);
+        model.addAttribute("nutrientsTracks", nutrientsTrackDtoPage.getContent());
+        model.addAttribute("currentPage", nutrientsTrackDtoPage.getNumber() + 1);
+        model.addAttribute("totalPages", nutrientsTrackDtoPage.getTotalPages());
+        model.addAttribute("pageSize", nutrientsTrackDtoPage.getSize());
         mapChartData(model, nutrientsTrackDtoPage);
         return "nutrients-tracks-list";
     }

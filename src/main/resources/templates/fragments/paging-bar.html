@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="paging-bar(link)" aria-label="Pagination">
+    <ul class="pagination m-0">
+        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+            <a th:replace="fragments/paging-link :: paging-link('/nutrients-tracks',1, #{pagingBar.page.first.label}, #{pagingBar.page.first.tooltip})"></a>
+        </li>
+        <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
+            <a th:replace="fragments/paging-link :: paging-link('/nutrients-tracks',${currentPage - 1}, #{pagingBar.page.previous.label}, #{pagingBar.page.previous.tooltip})"></a>
+        </li>
+        <li class="page-item disabled" th:if="${currentPage - 2 > 1}">
+            <a class="page-link" href="#">...</a>
+        </li>
+        <li class="page-item" th:classappend="${page == currentPage} ? 'active'"
+            th:each="page : ${#numbers.sequence(currentPage > 2 ? currentPage - 2 : 1, currentPage + 2 < totalPages ? currentPage + 2 : totalPages)}">
+            <a th:replace="fragments/paging-link :: paging-link('/nutrients-tracks',${page}, ${page}, #{pagingBar.page.current.tooltip} + ' ' + ${page})"></a>
+        </li>
+        <li class="page-item disabled" th:if="${currentPage + 2 < totalPages}">
+            <a class="page-link" href="#">...</a>
+        </li>
+        <li class="page-item font-weight-bold"
+            th:classappend="${currentPage == totalPages} ? 'disabled'">
+            <a th:replace="fragments/paging-link :: paging-link('/nutrients-tracks',${currentPage + 1},#{pagingBar.page.next.label}, #{pagingBar.page.next.tooltip})"></a>
+        </li>
+        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+            <a th:replace="fragments/paging-link :: paging-link('/nutrients-tracks',${totalPages}, #{pagingBar.page.last.label}, #{pagingBar.page.last.tooltip})"></a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>

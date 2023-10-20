@@ -512,7 +512,7 @@ $(document).ready(function () {
     });
 })
 
-//Weight tracking chart
+//Fats tracking chart
 $(document).ready(function () {
     const chart = $("#fatsTrackingChart");
     const ctx = chart[0].getContext('2d');
@@ -531,7 +531,7 @@ $(document).ready(function () {
     });
 })
 
-//Weight tracking chart
+//Carbohydrates tracking chart
 $(document).ready(function () {
     const chart = $("#carbohydratesTrackingChart");
     const ctx = chart[0].getContext('2d');
@@ -550,7 +550,7 @@ $(document).ready(function () {
     });
 })
 
-//Weight tracking chart
+//Protein tracking chart
 $(document).ready(function () {
     const chart = $("#proteinTrackingChart");
     const ctx = chart[0].getContext('2d');
@@ -569,7 +569,7 @@ $(document).ready(function () {
     });
 })
 
-//Weight tracking chart
+//Calories tracking chart
 $(document).ready(function () {
     const chart = $("#caloriesTrackingChart");
     const ctx = chart[0].getContext('2d');
@@ -587,3 +587,8 @@ $(document).ready(function () {
         }
     });
 })
+
+//Change page size
+function changePageSize() {
+    $("#pageSizeForm").submit();
+}
