@@ -76,6 +76,9 @@
                         </tr>
                         </tbody>
                     </table>
+                    <div th:unless="${weightTracks.size() > 0}" class="text-center mb-3">
+                        <span th:text="#{weightTracks.list.table.notFound}"></span>
+                    </div>
                 </div>
                 <div class="col">
                     <canvas id="weightTrackingChart"

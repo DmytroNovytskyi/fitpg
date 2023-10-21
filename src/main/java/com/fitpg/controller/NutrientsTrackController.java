@@ -34,7 +34,7 @@ public class NutrientsTrackController {
     @GetMapping
     public String getSortedPage(@RequestParam(value = "page", defaultValue = "1")
                                 @Min(value = 1, message = "{nutrientsTrack.getSortedPage.page.min}") int page,
-                                @RequestParam(value = "size", defaultValue = "5")
+                                @RequestParam(value = "size", defaultValue = "7")
                                 @Min(value = 1, message = "{nutrientsTrack.getSortedPage.size.min}") int size,
                                 @RequestParam(value = "sortBy", defaultValue = "date")
                                 @Pattern(regexp = SORT_BY_REGEX,
