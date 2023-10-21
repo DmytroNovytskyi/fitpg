@@ -492,3 +492,103 @@ $('#muscle-groups-create-form').on('submit', function (event) {
         this.submit();
     }
 })
+
+//Weight tracking chart
+$(document).ready(function () {
+    const chart = $("#weightTrackingChart");
+    const ctx = chart[0].getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chart.attr('labels').replace('[', '').replace(']', '').split(','),
+            datasets: [
+                {
+                    label: "Weight",
+                    data: chart.attr('data-sets').replace('[', '').replace(']', '').split(','),
+                    backgroundColor: 'rgba(114,53,184,0.6)'
+                }
+            ],
+        },
+    });
+})
+
+//Fats tracking chart
+$(document).ready(function () {
+    const chart = $("#fatsTrackingChart");
+    const ctx = chart[0].getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chart.attr('labels').replace('[', '').replace(']', '').split(','),
+            datasets: [
+                {
+                    label: "Fats",
+                    data: chart.attr('data-sets').replace('[', '').replace(']', '').split(','),
+                    backgroundColor: 'rgba(236,196,192,0.6)'
+                }
+            ],
+        }
+    });
+})
+
+//Carbohydrates tracking chart
+$(document).ready(function () {
+    const chart = $("#carbohydratesTrackingChart");
+    const ctx = chart[0].getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chart.attr('labels').replace('[', '').replace(']', '').split(','),
+            datasets: [
+                {
+                    label: "Carbohydrates",
+                    data: chart.attr('data-sets').replace('[', '').replace(']', '').split(','),
+                    backgroundColor: 'rgba(256,236,196,0.6)'
+                }
+            ],
+        }
+    });
+})
+
+//Protein tracking chart
+$(document).ready(function () {
+    const chart = $("#proteinTrackingChart");
+    const ctx = chart[0].getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chart.attr('labels').replace('[', '').replace(']', '').split(','),
+            datasets: [
+                {
+                    label: "Protein",
+                    data: chart.attr('data-sets').replace('[', '').replace(']', '').split(','),
+                    backgroundColor: 'rgba(200,220,252,0.6)'
+                }
+            ],
+        },
+    });
+})
+
+//Calories tracking chart
+$(document).ready(function () {
+    const chart = $("#caloriesTrackingChart");
+    const ctx = chart[0].getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chart.attr('labels').replace('[', '').replace(']', '').split(','),
+            datasets: [
+                {
+                    label: "Calories",
+                    data: chart.attr('data-sets').replace('[', '').replace(']', '').split(','),
+                    backgroundColor: 'rgba(200,228,204,0.6)'
+                }
+            ],
+        }
+    });
+})
+
+//Change page size
+function changePageSize() {
+    $("#pageSizeForm").submit();
+}

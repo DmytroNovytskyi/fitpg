@@ -1,11 +1,14 @@
 package com.fitpg.controller;
 
+import com.fitpg.dto.ExerciseInfoDto;
 import com.fitpg.dto.MuscleGroupDto;
 import com.fitpg.service.MuscleGroupService;
 import com.fitpg.validation.group.OnCreate;
 import com.fitpg.validation.group.OnUpdate;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,11 +21,29 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MuscleGroupsController {
 
+    private final static String SORT_BY_REGEX = "id|name";
+
+    private final static String ORDER_REGEX = "asc|desc";
+
     private final MuscleGroupService muscleGroupService;
 
     @GetMapping
-    public String getPage(Model model) {
-        model.addAttribute("muscleGroups", muscleGroupService.getAll());
+    public String getSortedPage(@RequestParam(value = "page", defaultValue = "1")
+                                    @Min(value = 1, message = "{muscleGroups.getSortedPage.page.min}") int page,
+                                @RequestParam(value = "size", defaultValue = "5")
+                                    @Min(value = 1, message = "{muscleGroups.getSortedPage.size.min}") int size,
+                                @RequestParam(value = "sortBy", defaultValue = "id")
+                                    @Pattern(regexp = SORT_BY_REGEX,
+                                            message = "{muscleGroups.getSortedPage.sortBy.pattern}") String sortBy,
+                                @RequestParam(value = "order", defaultValue = "asc")
+                                    @Pattern(regexp = ORDER_REGEX,
+                                            message = "{muscleGroups.getSortedPage.order.pattern}") String order,
+                                Model model) {
+        Page<MuscleGroupDto> muscleGroupDtoPage = muscleGroupService.getSortedPage(page - 1, size, sortBy, order);
+        model.addAttribute("muscleGroups", muscleGroupDtoPage.getContent());
+        model.addAttribute("currentPage", muscleGroupDtoPage.getNumber() + 1);
+        model.addAttribute("totalPages", muscleGroupDtoPage.getTotalPages());
+        model.addAttribute("pageSize", muscleGroupDtoPage.getSize());
         return "muscle-groups-list";
     }
 

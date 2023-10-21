@@ -19,39 +19,68 @@
                 </div>
             </div>
             <div class="row gx-5">
-                <table>
-                    <thead>
-                    <tr>
-                        <th th:text="#{users.list.table.id}"></th>
-                        <th th:text="#{users.list.table.username}"></th>
-                        <th th:text="#{users.list.table.email}"></th>
-                        <th th:text="#{users.list.table.roles}"></th>
-                        <th th:text="#{users.list.table.edit}"></th>
-                        <th th:text="#{users.list.table.delete}"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="user : ${page}">
-                        <td th:text="${user.id}"></td>
-                        <td th:text="${user.username}"></td>
-                        <td th:text="${user.email}"></td>
-                        <td th:text="${user.roles}"></td>
-                        <td>
-                            <a class="btn btn-primary" th:href="@{users/{id}(id=${user.id})}"
-                               th:text="#{users.list.table.edit}"></a>
-                        </td>
-                        <td>
-                            <form role="form" th:action="@{/users/{id}(id=${user.id})}" th:method="delete">
-                                <button class="btn btn-primary" th:text="#{users.list.table.delete}"
-                                        type="submit"></button>
+                <div class="col d-block">
+                    <div class="row my-3 ps-2">
+                        <div class="col mt-2 ps-0">
+                            <nav th:replace="fragments/paging-bar :: paging-bar('/users')"
+                                 th:if="${totalPages > 0}"></nav>
+                        </div>
+                        <div class="col">
+                            <form th:action="@{/users}" id="pageSizeForm">
+                                <div class="input-group mt-2 justify-content-end">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="pageSize"
+                                               th:text="#{users.list.table.paging.pageSize}"></label>
+                                    </div>
+                                    <select form="pageSizeForm" name="size" th:value="${pageSize}"
+                                            onchange="changePageSize()" class="size-select"
+                                            id="pageSize">
+                                        <option th:each="s : ${ {5, 10, 20, 50} }" th:value="${s}"
+                                                th:text="${s}" th:selected="${s == pageSize}"></option>
+                                    </select>
+                                </div>
                             </form>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                        </div>
+                    </div>
+                    <div class="row d-inline-block ps-2">
+                        <a class="btn btn-primary" role="button" th:href="@{/users/create}"
+                           th:text="#{users.list.table.create}"></a>
+                    </div>
+                    <table class="table" th:if="${users.size() > 0}">
+                        <thead>
+                        <tr>
+                            <th th:text="#{users.list.table.id}"></th>
+                            <th th:text="#{users.list.table.username}"></th>
+                            <th th:text="#{users.list.table.email}"></th>
+                            <th th:text="#{users.list.table.roles}"></th>
+                            <th th:text="#{users.list.table.edit}"></th>
+                            <th th:text="#{users.list.table.delete}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.id}"></td>
+                            <td th:text="${user.username}"></td>
+                            <td th:text="${user.email}"></td>
+                            <td th:text="${user.roles}"></td>
+                            <td>
+                                <a class="btn btn-primary" th:href="@{users/{id}(id=${user.id})}"
+                                   th:text="#{users.list.table.edit}"></a>
+                            </td>
+                            <td>
+                                <form role="form" th:action="@{/users/{id}(id=${user.id})}" th:method="delete">
+                                    <button class="btn btn-primary" th:text="#{users.list.table.delete}"
+                                            type="submit"></button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div th:unless="${users.size() > 0}" class="text-center mb-3">
+                        <span th:text="#{users.list.table.notFound}"></span>
+                    </div>
+                </div>
             </div>
-            <a class="btn btn-primary" role="button" th:href="@{/users/create}"
-               th:text="#{users.list.table.create}"></a>
         </div>
     </section>
 </main>

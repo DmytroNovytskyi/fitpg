@@ -5,7 +5,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{exerciseInfos.list.title}"></title>
+    <title th:text="#{weightTracks.list.title}"></title>
 </head>
 <body class="d-flex">
 <main class="flex-shrink-0">
@@ -14,7 +14,7 @@
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-6">
                     <div class="text-center mb-5">
-                        <h1 class="fw-bolder" th:text="#{exerciseInfos.list.table.title}"></h1>
+                        <h1 class="fw-bolder" th:text="#{weightTracks.list.table.title}"></h1>
                     </div>
                 </div>
             </div>
@@ -22,20 +22,20 @@
                 <div class="col d-block">
                     <div class="row my-3 ps-2">
                         <div class="col mt-2 ps-0">
-                            <nav th:replace="fragments/paging-bar :: paging-bar('/exercise-infos')"
+                            <nav th:replace="fragments/paging-bar :: paging-bar('/weight-tracks')"
                                  th:if="${totalPages > 0}"></nav>
                         </div>
                         <div class="col">
-                            <form th:action="@{/exercise-infos}" id="pageSizeForm">
+                            <form th:action="@{/weight-tracks}" id="pageSizeForm">
                                 <div class="input-group mt-2 justify-content-end">
                                     <div class="input-group-prepend">
                                         <label class="input-group-text" for="pageSize"
-                                               th:text="#{exerciseInfos.list.table.paging.pageSize}"></label>
+                                               th:text="#{weightTracks.list.table.paging.pageSize}"></label>
                                     </div>
                                     <select form="pageSizeForm" name="size" th:value="${pageSize}"
                                             onchange="changePageSize()" class="size-select"
                                             id="pageSize">
-                                        <option th:each="s : ${ {5, 10, 20} }" th:value="${s}"
+                                        <option th:each="s : ${ {7, 30, 60, 90, 180, 365} }" th:value="${s}"
                                                 th:text="${s}" th:selected="${s == pageSize}"></option>
                                     </select>
                                 </div>
@@ -43,41 +43,47 @@
                         </div>
                     </div>
                     <div class="row d-inline-block ps-2">
-                        <a class="btn btn-primary" role="button" th:href="@{/exercise-infos/create}"
-                           th:text="#{exerciseInfos.list.table.create}"></a>
+                        <a class="btn btn-primary" role="button" th:href="@{/weight-tracks/create}"
+                           th:text="#{weightTracks.list.table.create}"></a>
                     </div>
-                    <table class="table" th:if="${exerciseInfos.size() > 0}">
+                    <table class="table" th:if="${weightTracks.size() > 0}">
                         <thead>
                         <tr>
-                            <th th:text="#{exerciseInfos.list.table.id}"></th>
-                            <th th:text="#{exerciseInfos.list.table.name}"></th>
-                            <th th:text="#{exerciseInfos.list.table.muscleGroups}"></th>
-                            <th th:text="#{exerciseInfos.list.table.edit}"></th>
-                            <th th:text="#{exerciseInfos.list.table.delete}"></th>
+                            <th th:text="#{weightTracks.list.table.date}"></th>
+                            <th th:text="#{weightTracks.list.table.weight}"></th>
+                            <th th:text="#{weightTracks.list.table.edit}"></th>
+                            <th th:text="#{weightTracks.list.table.delete}"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="exerciseInfo : ${exerciseInfos}">
-                            <td th:text="${exerciseInfo.id}"></td>
-                            <td th:text="${exerciseInfo.name}"></td>
-                            <td th:text="${exerciseInfo.muscleGroups}"></td>
+                        <tr th:each="weightTrack : ${weightTracks}">
+                            <td th:text="${#dates.format(weightTrack.date, 'dd-MM-yyyy')}"></td>
+                            <td th:text="${weightTrack.weight}"></td>
                             <td>
-                                <a class="btn btn-primary" th:href="@{exercise-infos/{id}(id=${exerciseInfo.id})}"
-                                   th:text="#{exerciseInfos.list.table.edit}"></a>
+                                <a class="btn btn-primary"
+                                   th:href="@{weight-tracks/{id}(id=${weightTrack.id})}"
+                                   th:text="#{weightTracks.list.table.edit}"></a>
                             </td>
                             <td>
-                                <form role="form" th:action="@{/exercise-infos/{id}(id=${exerciseInfo.id})}"
+                                <form role="form"
+                                      th:action="@{/weight-tracks/{id}(id=${weightTrack.id})}"
                                       th:method="delete">
-                                    <button class="btn btn-primary" th:text="#{exerciseInfos.list.table.delete}"
+                                    <button class="btn btn-primary"
+                                            th:text="#{weightTracks.list.table.delete}"
                                             type="submit"></button>
                                 </form>
                             </td>
                         </tr>
                         </tbody>
                     </table>
-                    <div th:unless="${exerciseInfos.size() > 0}" class="text-center mb-3">
-                        <span th:text="#{exerciseInfos.list.table.notFound}"></span>
+                    <div th:unless="${weightTracks.size() > 0}" class="text-center mb-3">
+                        <span th:text="#{weightTracks.list.table.notFound}"></span>
                     </div>
+                </div>
+                <div class="col">
+                    <canvas id="weightTrackingChart"
+                            th:labels="${chartLabels}" th:data-sets="${chartDataSets}">
+                    </canvas>
                 </div>
             </div>
         </div>

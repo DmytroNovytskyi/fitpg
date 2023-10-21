@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{nutrientsTracks.update.title}"></title>
+</head>
+<body class="d-flex">
+<main class="flex-shrink-0">
+    <section class="py-5 min-vh-100" layout:fragment="body">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h1 class="fw-bolder" th:text="#{nutrientsTracks.update.form.title}"></h1>
+            </div>
+            <form id="nutrients-tracks-update-form" role="form"
+                  th:action="@{/nutrients-tracks/{id}(id=${nutrientsTrack.id})}"
+                  th:method="put"
+                  th:object="${nutrientsTrack}">
+                <input th:field="*{id}" type="hidden">
+                <div class="form-group">
+                    <label for="date" th:text="#{nutrientsTracks.update.form.date}"></label>
+                    <div class="input-group date" id="datepicker">
+                        <input type="text" class="form-control"
+                               id="date" th:field="*{date}" name="date"
+                               th:placeholder="#{nutrientsTracks.update.form.date.placeholder}"/>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="text-danger" th:errors="*{date}" th:if="${#fields.hasErrors('date')}"></div>
+                    <div class="text-danger d-none" id="nutrients-tracks-update-date-not-null"
+                         th:text="#{nutrientsTrack.date.notNull}" th:unless="${#fields.hasErrors('date')}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="fats" th:text="#{nutrientsTracks.update.form.fats}"></label>
+                    <input class="form-control"
+                           id="fats"
+                           name="fats"
+                           th:field="*{fats}"
+                           th:placeholder="#{nutrientsTracks.update.form.fats.placeholder}"
+                           type="text">
+                    <div class="text-danger" th:errors="*{fats}" th:if="${#fields.hasErrors('fats')}"></div>
+                    <div class="text-danger d-none" id="nutrients-tracks-update-fats-not-null"
+                         th:text="#{nutrientsTrack.fats.notNull}" th:unless="${#fields.hasErrors('fats')}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="carbohydrates" th:text="#{nutrientsTracks.update.form.carbohydrates}"></label>
+                    <input class="form-control"
+                           id="carbohydrates"
+                           name="carbohydrates"
+                           th:field="*{carbohydrates}"
+                           th:placeholder="#{nutrientsTracks.update.form.carbohydrates.placeholder}"
+                           type="text">
+                    <div class="text-danger" th:errors="*{carbohydrates}"
+                         th:if="${#fields.hasErrors('carbohydrates')}"></div>
+                    <div class="text-danger d-none" id="nutrients-tracks-update-carbohydrates-not-null"
+                         th:text="#{nutrientsTrack.carbohydrates.notNull}"
+                         th:unless="${#fields.hasErrors('carbohydrates')}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="protein" th:text="#{nutrientsTracks.update.form.protein}"></label>
+                    <input class="form-control"
+                           id="protein"
+                           name="protein"
+                           th:field="*{protein}"
+                           th:placeholder="#{nutrientsTracks.update.form.protein.placeholder}"
+                           type="text">
+                    <div class="text-danger" th:errors="*{protein}" th:if="${#fields.hasErrors('protein')}"></div>
+                    <div class="text-danger d-none" id="nutrients-tracks-update-protein-not-null"
+                         th:text="#{nutrientsTrack.protein.notNull}" th:unless="${#fields.hasErrors('protein')}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="calories" th:text="#{nutrientsTracks.update.form.calories}"></label>
+                    <input class="form-control"
+                           id="calories"
+                           name="calories"
+                           th:field="*{calories}"
+                           th:placeholder="#{nutrientsTracks.update.form.calories.placeholder}"
+                           type="text">
+                    <div class="text-danger" th:errors="*{calories}" th:if="${#fields.hasErrors('calories')}"></div>
+                    <div class="text-danger d-none" id="nutrients-tracks-update-calories-not-null"
+                         th:text="#{nutrientsTrack.calories.notNull}"
+                         th:unless="${#fields.hasErrors('calories')}"></div>
+                </div>
+                <a class="btn btn-danger" href="#" role="button" th:href="@{/nutrients-tracks}"
+                   th:text="#{nutrientsTracks.update.form.cancel}"></a>
+                <button class="btn btn-primary" th:text="#{nutrientsTracks.update.form.update}" type="submit"></button>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>

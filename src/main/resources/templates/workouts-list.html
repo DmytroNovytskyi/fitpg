@@ -19,103 +19,135 @@
                 </div>
             </div>
             <div class="row gx-5">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th th:text="#{workouts.list.date}"></th>
-                        <th th:text="#{workouts.list.muscleGroups}"></th>
-                        <th th:text="#{workouts.list.exercises}"></th>
-                        <th th:text="#{workouts.list.sets}"></th>
-                        <th th:text="#{workouts.list.note}"></th>
-                        <th th:text="#{workouts.list.actions}"></th>
-                        <th th:text="#{workouts.list.table.delete}"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <th:block th:each="workout : ${page}">
-                        <tr th:if="${workout.exercises.isEmpty()}">
-                            <td>
-                                <div class="col" th:text="${#dates.format(workout.date, 'dd-MM-yyyy')}"></div>
-                                <a class="btn btn-primary col" th:href="@{/exercises/create/{id}(id=${workout.id})}">
-                                    <i class="fa fa-plus-circle"></i>
-                                </a>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <form role="form" th:action="@{/workouts/{id}(id=${workout.id})}"
-                                      th:method="delete">
-                                    <button class="btn btn-primary" th:text="#{workouts.list.table.delete}"
-                                            type="submit"></button>
-                                </form>
-                            </td>
+                <div class="col d-block">
+                    <div class="row my-3 ps-2">
+                        <div class="col mt-2 ps-0">
+                            <nav th:replace="fragments/paging-bar :: paging-bar('/workouts')"
+                                 th:if="${totalPages > 0}"></nav>
+                        </div>
+                        <div class="col">
+                            <form th:action="@{/workouts}" id="pageSizeForm">
+                                <div class="input-group mt-2 justify-content-end">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="pageSize"
+                                               th:text="#{workouts.list.table.paging.pageSize}"></label>
+                                    </div>
+                                    <select form="pageSizeForm" name="size" th:value="${pageSize}"
+                                            onchange="changePageSize()" class="size-select"
+                                            id="pageSize">
+                                        <option th:each="s : ${ {7, 15, 30} }" th:value="${s}"
+                                                th:text="${s}" th:selected="${s == pageSize}"></option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row d-inline-block ps-2">
+                        <a class="btn btn-primary" role="button" data-bs-toggle="modal"
+                           data-bs-target="#workouts-create-modal"
+                           th:text="#{workouts.list.table.create}"></a>
+                    </div>
+                    <table class="table" th:if="${workouts.size() > 0}">
+                        <thead>
+                        <tr>
+                            <th th:text="#{workouts.list.date}"></th>
+                            <th th:text="#{workouts.list.muscleGroups}"></th>
+                            <th th:text="#{workouts.list.exercises}"></th>
+                            <th th:text="#{workouts.list.sets}"></th>
+                            <th th:text="#{workouts.list.note}"></th>
+                            <th th:text="#{workouts.list.actions}"></th>
+                            <th th:text="#{workouts.list.table.delete}"></th>
                         </tr>
-                        <tr th:each="exercise, i : ${workout.exercises}">
-                            <td th:if="${i.index == 0}"
-                                th:rowspan="${workout.exercises.size()}">
-                                <div class="col" th:text="${#dates.format(workout.date, 'dd-MM-yyyy')}"></div>
-                                <a class="btn btn-primary col" th:href="@{/exercises/create/{id}(id=${workout.id})}">
-                                    <i class="fa fa-plus-circle"></i>
-                                </a>
-                            </td>
-                            <td>
-                                <table>
-                                    <tr th:each="muscleGroup : ${exercise.exerciseInfo.muscleGroups}">
-                                        <td th:text="${muscleGroup}"></td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td th:text=" ${exercise.exerciseInfo.name}"></td>
-                            <td>
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <td th:each="set : ${exercise.exerciseSets}"
-                                            th:text="${set.repetitions} + 'x' + ${set.weight}
+                        </thead>
+                        <tbody>
+                        <th:block th:each="workout : ${workouts}">
+                            <tr th:if="${workout.exercises.isEmpty()}">
+                                <td>
+                                    <div class="col" th:text="${#dates.format(workout.date, 'dd-MM-yyyy')}"></div>
+                                    <a class="btn btn-primary col"
+                                       th:href="@{/exercises/create/{id}(id=${workout.id})}">
+                                        <i class="fa fa-plus-circle"></i>
+                                    </a>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <form role="form" th:action="@{/workouts/{id}(id=${workout.id})}"
+                                          th:method="delete">
+                                        <button class="btn btn-primary" th:text="#{workouts.list.table.delete}"
+                                                type="submit"></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:each="exercise, i : ${workout.exercises}">
+                                <td th:if="${i.index == 0}"
+                                    th:rowspan="${workout.exercises.size()}">
+                                    <div class="col" th:text="${#dates.format(workout.date, 'dd-MM-yyyy')}"></div>
+                                    <a class="btn btn-primary col"
+                                       th:href="@{/exercises/create/{id}(id=${workout.id})}">
+                                        <i class="fa fa-plus-circle"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <table>
+                                        <tr th:each="muscleGroup : ${exercise.exerciseInfo.muscleGroups}">
+                                            <td th:text="${muscleGroup}"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td th:text=" ${exercise.exerciseInfo.name}"></td>
+                                <td>
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td th:each="set : ${exercise.exerciseSets}"
+                                                th:text="${set.repetitions} + 'x' + ${set.weight}
                                         + ' ' + ${#strings.toLowerCase(set.unit)}"></td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td th:text="${exercise.note}"></td>
-                            <td>
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <a class="btn btn-primary"
-                                               th:href="@{exercises/{id}(id=${exercise.id})}"
-                                               th:text="#{workouts.list.table.exercise.edit}"></a>
-                                        </td>
-                                        <td>
-                                            <form role="form"
-                                                  th:action="@{/exercises/{id}(id=${exercise.id})}"
-                                                  th:method="delete">
-                                                <button class="btn btn-primary"
-                                                        th:text="#{workouts.list.table.exercise.delete}"
-                                                        type="submit"></button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td th:if="${i.index == 0}"
-                                th:rowspan="${workout.exercises.size()}">
-                                <form role="form" th:action="@{/workouts/{id}(id=${workout.id})}"
-                                      th:method="delete">
-                                    <button class="btn btn-primary" th:text="#{workouts.list.table.delete}"
-                                            type="submit"></button>
-                                </form>
-                            </td>
-                        </tr>
-                    </th:block>
-                    </tbody>
-                </table>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td th:text="${exercise.note}"></td>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <a class="btn btn-primary"
+                                                   th:href="@{exercises/{id}(id=${exercise.id})}"
+                                                   th:text="#{workouts.list.table.exercise.edit}"></a>
+                                            </td>
+                                            <td>
+                                                <form role="form"
+                                                      th:action="@{/exercises/{id}(id=${exercise.id})}"
+                                                      th:method="delete">
+                                                    <button class="btn btn-primary"
+                                                            th:text="#{workouts.list.table.exercise.delete}"
+                                                            type="submit"></button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td th:if="${i.index == 0}"
+                                    th:rowspan="${workout.exercises.size()}">
+                                    <form role="form" th:action="@{/workouts/{id}(id=${workout.id})}"
+                                          th:method="delete">
+                                        <button class="btn btn-primary" th:text="#{workouts.list.table.delete}"
+                                                type="submit"></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                    <div th:unless="${workouts.size() > 0}" class="text-center mb-3">
+                        <span th:text="#{workouts.list.table.notFound}"></span>
+                    </div>
+                </div>
             </div>
-            <a class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#workouts-create-modal"
-               th:text="#{workouts.list.table.create}"></a>
         </div>
-        <th:block th:replace="workouts-create-modal :: modal(${workout})"></th:block>
+        <th:block th:replace="fragments/workouts-create-modal :: workout-create-modal(${workout})"></th:block>
     </section>
 </main>
 </body>

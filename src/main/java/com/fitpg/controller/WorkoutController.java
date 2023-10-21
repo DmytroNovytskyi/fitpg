@@ -1,12 +1,12 @@
 package com.fitpg.controller;
 
 import com.fitpg.dto.WorkoutDto;
-import com.fitpg.security.SecurityUtil;
 import com.fitpg.service.WorkoutService;
 import com.fitpg.validation.group.OnCreate;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -25,9 +25,9 @@ public class WorkoutController {
     private final WorkoutService workoutService;
 
     @GetMapping
-    public String getSortedPage(@RequestParam(value = "page", defaultValue = "0")
-                                @Min(value = 0, message = "{workouts.getSortedPage.page.min}") int page,
-                                @RequestParam(value = "size", defaultValue = "5")
+    public String getSortedPage(@RequestParam(value = "page", defaultValue = "1")
+                                @Min(value = 1, message = "{workouts.getSortedPage.page.min}") int page,
+                                @RequestParam(value = "size", defaultValue = "7")
                                 @Min(value = 1, message = "{workouts.getSortedPage.size.min}") int size,
                                 @RequestParam(value = "sortBy", defaultValue = "date")
                                 @Pattern(regexp = SORT_BY_REGEX,
@@ -36,8 +36,11 @@ public class WorkoutController {
                                 @Pattern(regexp = ORDER_REGEX,
                                         message = "{workouts.getSortedPage.order.pattern}") String order,
                                 Model model) {
-        model.addAttribute("page",
-                workoutService.getSortedPageForUser(page, size, sortBy, order, SecurityUtil.getSessionUser()));
+        Page<WorkoutDto> workoutDtoPage = workoutService.getSortedPage(page - 1, size, sortBy, order);
+        model.addAttribute("workouts", workoutDtoPage.getContent());
+        model.addAttribute("currentPage", workoutDtoPage.getNumber() + 1);
+        model.addAttribute("totalPages", workoutDtoPage.getTotalPages());
+        model.addAttribute("pageSize", workoutDtoPage.getSize());
         model.addAttribute("workout", new WorkoutDto());
         return "workouts-list";
     }

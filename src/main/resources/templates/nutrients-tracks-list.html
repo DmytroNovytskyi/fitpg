@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{nutrientsTracks.list.title}"></title>
+</head>
+<body class="d-flex">
+<main class="flex-shrink-0">
+    <section class="py-5 min-vh-100" layout:fragment="body">
+        <div class="container px-5 my-5">
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-6">
+                    <div class="text-center mb-5">
+                        <h1 class="fw-bolder" th:text="#{nutrientsTracks.list.table.title}"></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row gx-5">
+                <div class="col d-block">
+                    <div class="row my-3 ps-2">
+                        <div class="col mt-2 ps-0">
+                            <nav th:replace="fragments/paging-bar :: paging-bar('/nutrients-tracks')"
+                                 th:if="${totalPages > 0}"></nav>
+                        </div>
+                        <div class="col">
+                            <form th:action="@{/nutrients-tracks}" id="pageSizeForm">
+                                <div class="input-group mt-2 justify-content-end">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="pageSize"
+                                               th:text="#{nutrientsTracks.list.table.paging.pageSize}"></label>
+                                    </div>
+                                    <select form="pageSizeForm" name="size" th:value="${pageSize}"
+                                            onchange="changePageSize()" class="size-select"
+                                            id="pageSize">
+                                        <option th:each="s : ${ {7, 30, 60, 90, 180, 365} }" th:value="${s}"
+                                                th:text="${s}" th:selected="${s == pageSize}"></option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row d-inline-block ps-2">
+                        <a class="btn btn-primary" role="button" th:href="@{/nutrients-tracks/create}"
+                           th:text="#{nutrientsTracks.list.table.create}"></a>
+                    </div>
+                    <table class="table" th:if="${nutrientsTracks.size() > 0}">
+                        <thead>
+                        <tr>
+                            <th th:text="#{nutrientsTracks.list.table.date}"></th>
+                            <th th:text="#{nutrientsTracks.list.table.fats}"></th>
+                            <th th:text="#{nutrientsTracks.list.table.carbohydrates}"></th>
+                            <th th:text="#{nutrientsTracks.list.table.protein}"></th>
+                            <th th:text="#{nutrientsTracks.list.table.calories}"></th>
+                            <th th:text="#{nutrientsTracks.list.table.edit}"></th>
+                            <th th:text="#{nutrientsTracks.list.table.delete}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="nutrientsTrack : ${nutrientsTracks}">
+                            <td th:text="${#dates.format(nutrientsTrack.date, 'dd-MM-yyyy')}"></td>
+                            <td th:text="${nutrientsTrack.fats}"></td>
+                            <td th:text="${nutrientsTrack.carbohydrates}"></td>
+                            <td th:text="${nutrientsTrack.protein}"></td>
+                            <td th:text="${nutrientsTrack.calories}"></td>
+                            <td>
+                                <a class="btn btn-primary"
+                                   th:href="@{nutrients-tracks/{id}(id=${nutrientsTrack.id})}"
+                                   th:text="#{nutrientsTracks.list.table.edit}"></a>
+                            </td>
+                            <td>
+                                <form role="form"
+                                      th:action="@{/nutrients-tracks/{id}(id=${nutrientsTrack.id})}"
+                                      th:method="delete">
+                                    <button class="btn btn-primary"
+                                            th:text="#{nutrientsTracks.list.table.delete}"
+                                            type="submit"></button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div th:unless="${nutrientsTracks.size() > 0}" class="text-center mb-3">
+                        <span th:text="#{nutrientsTracks.list.table.notFound}"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <canvas id="caloriesTrackingChart"
+                            th:labels="${chartLabels}" th:data-sets="${caloriesChartDataSets}">
+                    </canvas>
+                    <canvas id="fatsTrackingChart"
+                            th:labels="${chartLabels}" th:data-sets="${fatsChartDataSets}">
+                    </canvas>
+                    <canvas id="carbohydratesTrackingChart"
+                            th:labels="${chartLabels}" th:data-sets="${carbohydratesChartDataSets}">
+                    </canvas>
+                    <canvas id="proteinTrackingChart"
+                            th:labels="${chartLabels}" th:data-sets="${proteinChartDataSets}">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

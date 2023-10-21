@@ -7,6 +7,7 @@ import com.fitpg.validation.group.OnUpdate;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,7 +42,7 @@ public class UserController {
      * @return a page of users sorted and filtered according to the specified parameters
      */
     @GetMapping
-    public String getSortedPage(@RequestParam(value = "page", defaultValue = "0")
+    public String getSortedPage(@RequestParam(value = "page", defaultValue = "1")
                                 @Min(value = 0, message = "{users.getSortedPage.page.min}") int page,
                                 @RequestParam(value = "size", defaultValue = "5")
                                 @Min(value = 1, message = "{users.getSortedPage.size.min}") int size,
@@ -52,7 +53,11 @@ public class UserController {
                                 @Pattern(regexp = ORDER_REGEX,
                                         message = "{users.getSortedPage.order.pattern}") String order,
                                 Model model) {
-        model.addAttribute("page", userService.getSortedPage(page, size, sortBy, order));
+        Page<UserDto> userDtoPage = userService.getSortedPage(page - 1, size, sortBy, order);
+        model.addAttribute("users", userDtoPage.getContent());
+        model.addAttribute("currentPage", userDtoPage.getNumber() + 1);
+        model.addAttribute("totalPages", userDtoPage.getTotalPages());
+        model.addAttribute("pageSize", userDtoPage.getSize());
         return "users-list";
     }
 
