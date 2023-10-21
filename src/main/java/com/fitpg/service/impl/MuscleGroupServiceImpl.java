@@ -7,6 +7,10 @@ import com.fitpg.model.MuscleGroup;
 import com.fitpg.repository.MuscleGroupRepository;
 import com.fitpg.service.MuscleGroupService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +20,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MuscleGroupServiceImpl implements MuscleGroupService {
 
+    private static final String ORDER_DESCENDING = "desc";
+
     private final MuscleGroupRepository muscleGroupRepository;
 
     private final MuscleGroupMapper muscleGroupMapper;
+
+    @Transactional
+    @Override
+    public MuscleGroupDto getById(long id) {
+        MuscleGroup muscleGroup = muscleGroupRepository.findById(id)
+                .orElseThrow(MuscleGroupNotFoundException::new);
+        return muscleGroupMapper.mapMuscleGroupDto(muscleGroup);
+    }
 
     @Transactional
     @Override
@@ -28,10 +42,10 @@ public class MuscleGroupServiceImpl implements MuscleGroupService {
 
     @Transactional
     @Override
-    public MuscleGroupDto getById(long id) {
-        MuscleGroup muscleGroup = muscleGroupRepository.findById(id)
-                .orElseThrow(MuscleGroupNotFoundException::new);
-        return muscleGroupMapper.mapMuscleGroupDto(muscleGroup);
+    public Page<MuscleGroupDto> getSortedPage(int page, int size, String sortBy, String order) {
+        Sort sort = order.equals(ORDER_DESCENDING) ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return muscleGroupRepository.findAll(pageable).map(muscleGroupMapper::mapMuscleGroupDto);
     }
 
     @Transactional

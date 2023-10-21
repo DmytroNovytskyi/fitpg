@@ -19,36 +19,65 @@
                 </div>
             </div>
             <div class="row gx-5">
-                <table>
-                    <thead>
-                    <tr>
-                        <th th:text="#{muscleGroups.list.table.id}"></th>
-                        <th th:text="#{muscleGroups.list.table.name}"></th>
-                        <th th:text="#{muscleGroups.list.table.edit}"></th>
-                        <th th:text="#{muscleGroups.list.table.delete}"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="muscleGroup : ${muscleGroups}">
-                        <td th:text="${muscleGroup.id}"></td>
-                        <td th:text="${muscleGroup.name}"></td>
-                        <td>
-                            <a class="btn btn-primary" th:href="@{muscle-groups/{id}(id=${muscleGroup.id})}"
-                               th:text="#{muscleGroups.list.table.edit}"></a>
-                        </td>
-                        <td>
-                            <form role="form" th:action="@{/muscle-groups/{id}(id=${muscleGroup.id})}"
-                                  th:method="delete">
-                                <button class="btn btn-primary" th:text="#{muscleGroups.list.table.delete}"
-                                        type="submit"></button>
+                <div class="col d-block">
+                    <div class="row my-3 ps-2">
+                        <div class="col mt-2 ps-0">
+                            <nav th:replace="fragments/paging-bar :: paging-bar('/muscle-groups')"
+                                 th:if="${totalPages > 0}"></nav>
+                        </div>
+                        <div class="col">
+                            <form th:action="@{/muscle-groups}" id="pageSizeForm">
+                                <div class="input-group mt-2 justify-content-end">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="pageSize"
+                                               th:text="#{muscleGroups.list.table.paging.pageSize}"></label>
+                                    </div>
+                                    <select form="pageSizeForm" name="size" th:value="${pageSize}"
+                                            onchange="changePageSize()" class="size-select"
+                                            id="pageSize">
+                                        <option th:each="s : ${ {5, 10, 20} }" th:value="${s}"
+                                                th:text="${s}" th:selected="${s == pageSize}"></option>
+                                    </select>
+                                </div>
                             </form>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                        </div>
+                    </div>
+                    <div class="row d-inline-block ps-2">
+                        <a class="btn btn-primary" role="button" th:href="@{/muscle-groups/create}"
+                           th:text="#{muscleGroups.list.table.create}"></a>
+                    </div>
+                    <table class="table" th:if="${muscleGroups.size() > 0}">
+                        <thead>
+                        <tr>
+                            <th th:text="#{muscleGroups.list.table.id}"></th>
+                            <th th:text="#{muscleGroups.list.table.name}"></th>
+                            <th th:text="#{muscleGroups.list.table.edit}"></th>
+                            <th th:text="#{muscleGroups.list.table.delete}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="muscleGroup : ${muscleGroups}">
+                            <td th:text="${muscleGroup.id}"></td>
+                            <td th:text="${muscleGroup.name}"></td>
+                            <td>
+                                <a class="btn btn-primary" th:href="@{muscle-groups/{id}(id=${muscleGroup.id})}"
+                                   th:text="#{muscleGroups.list.table.edit}"></a>
+                            </td>
+                            <td>
+                                <form role="form" th:action="@{/muscle-groups/{id}(id=${muscleGroup.id})}"
+                                      th:method="delete">
+                                    <button class="btn btn-primary" th:text="#{muscleGroups.list.table.delete}"
+                                            type="submit"></button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div th:unless="${muscleGroups.size() > 0}" class="text-center mb-3">
+                        <span th:text="#{muscleGroups.list.table.notFound}"></span>
+                    </div>
+                </div>
             </div>
-            <a class="btn btn-primary" role="button" th:href="@{/muscle-groups/create}"
-               th:text="#{muscleGroups.list.table.create}"></a>
         </div>
     </section>
 </main>
