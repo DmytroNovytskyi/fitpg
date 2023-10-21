@@ -19,44 +19,70 @@
                 </div>
             </div>
             <div class="row gx-5">
-                <table class="table col">
-                    <thead>
-                    <tr>
-                        <th th:text="#{weightTracks.list.table.date}"></th>
-                        <th th:text="#{weightTracks.list.table.weight}"></th>
-                        <th th:text="#{weightTracks.list.table.edit}"></th>
-                        <th th:text="#{weightTracks.list.table.delete}"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="weightTrack : ${page}">
-                        <td th:text="${#dates.format(weightTrack.date, 'dd-MM-yyyy')}"></td>
-                        <td th:text="${weightTrack.weight}"></td>
-                        <td>
-                            <a class="btn btn-primary"
-                               th:href="@{weight-tracks/{id}(id=${weightTrack.id})}"
-                               th:text="#{weightTracks.list.table.edit}"></a>
-                        </td>
-                        <td>
-                            <form role="form"
-                                  th:action="@{/weight-tracks/{id}(id=${weightTrack.id})}"
-                                  th:method="delete">
-                                <button class="btn btn-primary"
-                                        th:text="#{weightTracks.list.table.delete}"
-                                        type="submit"></button>
+                <div class="col d-block">
+                    <div class="row my-3 ps-2">
+                        <div class="col mt-2 ps-0">
+                            <nav th:replace="fragments/paging-bar :: paging-bar('/weight-tracks')"
+                                 th:if="${totalPages > 0}"></nav>
+                        </div>
+                        <div class="col">
+                            <form th:action="@{/weight-tracks}" id="pageSizeForm">
+                                <div class="input-group mt-2 justify-content-end">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="pageSize"
+                                               th:text="#{weightTracks.list.table.paging.pageSize}"></label>
+                                    </div>
+                                    <select form="pageSizeForm" name="size" th:value="${pageSize}"
+                                            onchange="changePageSize()" class="size-select"
+                                            id="pageSize">
+                                        <option th:each="s : ${ {7, 30, 60, 90, 180, 365} }" th:value="${s}"
+                                                th:text="${s}" th:selected="${s == pageSize}"></option>
+                                    </select>
+                                </div>
                             </form>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                        </div>
+                    </div>
+                    <div class="row d-inline-block ps-2">
+                        <a class="btn btn-primary" role="button" th:href="@{/weight-tracks/create}"
+                           th:text="#{weightTracks.list.table.create}"></a>
+                    </div>
+                    <table class="table" th:if="${weightTracks.size() > 0}">
+                        <thead>
+                        <tr>
+                            <th th:text="#{weightTracks.list.table.date}"></th>
+                            <th th:text="#{weightTracks.list.table.weight}"></th>
+                            <th th:text="#{weightTracks.list.table.edit}"></th>
+                            <th th:text="#{weightTracks.list.table.delete}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="weightTrack : ${weightTracks}">
+                            <td th:text="${#dates.format(weightTrack.date, 'dd-MM-yyyy')}"></td>
+                            <td th:text="${weightTrack.weight}"></td>
+                            <td>
+                                <a class="btn btn-primary"
+                                   th:href="@{weight-tracks/{id}(id=${weightTrack.id})}"
+                                   th:text="#{weightTracks.list.table.edit}"></a>
+                            </td>
+                            <td>
+                                <form role="form"
+                                      th:action="@{/weight-tracks/{id}(id=${weightTrack.id})}"
+                                      th:method="delete">
+                                    <button class="btn btn-primary"
+                                            th:text="#{weightTracks.list.table.delete}"
+                                            type="submit"></button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <div class="col">
                     <canvas id="weightTrackingChart"
                             th:labels="${chartLabels}" th:data-sets="${chartDataSets}">
                     </canvas>
                 </div>
             </div>
-            <a class="btn btn-primary" role="button" th:href="@{/weight-tracks/create}"
-               th:text="#{weightTracks.list.table.create}"></a>
         </div>
     </section>
 </main>

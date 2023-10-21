@@ -32,8 +32,8 @@ public class WeightTrackController {
     private final WeightTrackService weightTrackService;
 
     @GetMapping
-    public String getSortedPage(@RequestParam(value = "page", defaultValue = "0")
-                                @Min(value = 0, message = "{weightTracks.getSortedPage.page.min}") int page,
+    public String getSortedPage(@RequestParam(value = "page", defaultValue = "1")
+                                @Min(value = 1, message = "{weightTracks.getSortedPage.page.min}") int page,
                                 @RequestParam(value = "size", defaultValue = "5")
                                 @Min(value = 1, message = "{weightTracks.getSortedPage.size.min}") int size,
                                 @RequestParam(value = "sortBy", defaultValue = "date")
@@ -43,8 +43,11 @@ public class WeightTrackController {
                                 @Pattern(regexp = ORDER_REGEX,
                                         message = "{weightTracks.getSortedPage.order.pattern}") String order,
                                 Model model) {
-        Page<WeightTrackDto> weightTrackDtoPage = weightTrackService.getSortedPage(page, size, sortBy, order);
-        model.addAttribute("page", weightTrackDtoPage);
+        Page<WeightTrackDto> weightTrackDtoPage = weightTrackService.getSortedPage(page - 1, size, sortBy, order);
+        model.addAttribute("weightTracks", weightTrackDtoPage.getContent());
+        model.addAttribute("currentPage", weightTrackDtoPage.getNumber() + 1);
+        model.addAttribute("totalPages", weightTrackDtoPage.getTotalPages());
+        model.addAttribute("pageSize", weightTrackDtoPage.getSize());
         mapChartData(model, weightTrackDtoPage);
         return "weight-tracks-list";
     }
