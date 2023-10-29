@@ -45,6 +45,8 @@ public class ExerciseInfoController {
         model.addAttribute("exerciseInfos", exerciseInfoDtoPage.getContent());
         model.addAttribute("currentPage", exerciseInfoDtoPage.getNumber() + 1);
         model.addAttribute("totalPages", exerciseInfoDtoPage.getTotalPages());
+        model.addAttribute("pageOrder", order);
+        model.addAttribute("pageSortBy", sortBy);
         model.addAttribute("pageSize", exerciseInfoDtoPage.getSize());
         return "exercise-infos-list";
     }

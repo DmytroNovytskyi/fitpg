@@ -40,6 +40,8 @@ public class WorkoutController {
         model.addAttribute("workouts", workoutDtoPage.getContent());
         model.addAttribute("currentPage", workoutDtoPage.getNumber() + 1);
         model.addAttribute("totalPages", workoutDtoPage.getTotalPages());
+        model.addAttribute("pageOrder", order);
+        model.addAttribute("pageSortBy", sortBy);
         model.addAttribute("pageSize", workoutDtoPage.getSize());
         model.addAttribute("workout", new WorkoutDto());
         return "workouts-list";

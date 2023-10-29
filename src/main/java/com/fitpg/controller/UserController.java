@@ -57,6 +57,8 @@ public class UserController {
         model.addAttribute("users", userDtoPage.getContent());
         model.addAttribute("currentPage", userDtoPage.getNumber() + 1);
         model.addAttribute("totalPages", userDtoPage.getTotalPages());
+        model.addAttribute("pageOrder", order);
+        model.addAttribute("pageSortBy", sortBy);
         model.addAttribute("pageSize", userDtoPage.getSize());
         return "users-list";
     }

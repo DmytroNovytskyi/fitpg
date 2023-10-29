@@ -588,7 +588,7 @@ $(document).ready(function () {
     });
 })
 
-//Change page size
-function changePageSize() {
-    $("#pageSizeForm").submit();
+//Change page
+function changePage() {
+    $("#pageForm").submit();
 }

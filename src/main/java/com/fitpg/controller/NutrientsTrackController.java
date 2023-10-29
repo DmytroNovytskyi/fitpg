@@ -47,6 +47,8 @@ public class NutrientsTrackController {
         model.addAttribute("nutrientsTracks", nutrientsTrackDtoPage.getContent());
         model.addAttribute("currentPage", nutrientsTrackDtoPage.getNumber() + 1);
         model.addAttribute("totalPages", nutrientsTrackDtoPage.getTotalPages());
+        model.addAttribute("pageOrder", order);
+        model.addAttribute("pageSortBy", sortBy);
         model.addAttribute("pageSize", nutrientsTrackDtoPage.getSize());
         mapChartData(model, nutrientsTrackDtoPage);
         return "nutrients-tracks-list";
