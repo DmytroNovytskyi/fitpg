@@ -39,7 +39,8 @@
                                                     onchange="changePage()" class="size-select col"
                                                     id="pageOrder">
                                                 <option th:each="s : ${ {'asc', 'desc'} }" th:value="${s}"
-                                                        th:text="${s}" th:selected="${s == pageOrder}"></option>
+                                                        th:text="#{'weightTracks.list.table.paging.pageOrder.' + ${s}}"
+                                                        th:selected="${s == pageOrder}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -100,7 +101,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <canvas id="weightTrackingChart"
+                    <canvas id="weightTrackingChart" th:chartLabel="#{weightTracks.list.chart.label}"
                             th:labels="${chartLabels}" th:data-sets="${chartDataSets}">
                     </canvas>
                 </div>

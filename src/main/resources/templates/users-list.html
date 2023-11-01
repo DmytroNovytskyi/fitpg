@@ -25,7 +25,7 @@
                             <nav th:replace="fragments/paging-bar :: paging-bar('/users')"
                                  th:if="${totalPages > 0}"></nav>
                         </div>
-                        <div class="col-3">
+                        <div class="col-4">
                             <form th:action="@{/users}" id="pageForm">
                                 <div class="form-group mt-2 row">
                                     <div class="row justify-content-end">
@@ -38,7 +38,8 @@
                                                     onchange="changePage()" class="size-select col"
                                                     id="pageOrder">
                                                 <option th:each="s : ${ {'asc', 'desc'} }" th:value="${s}"
-                                                        th:text="${s}" th:selected="${s == pageOrder}"></option>
+                                                        th:text="#{'users.list.table.paging.pageOrder.' + ${s}}"
+                                                        th:selected="${s == pageOrder}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -52,7 +53,8 @@
                                                     onchange="changePage()" class="size-select col"
                                                     id="pageSortBy">
                                                 <option th:each="s : ${ {'id', 'username', 'email'} }" th:value="${s}"
-                                                        th:text="${s}" th:selected="${s == pageSortBy}"></option>
+                                                        th:text="#{'users.list.table.paging.pageSortBy.' + ${s}}"
+                                                        th:selected="${s == pageSortBy}"></option>
                                             </select>
                                         </div>
                                     </div>

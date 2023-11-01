@@ -1,41 +1,29 @@
 package com.fitpg.validation.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 /**
  * Configuration class for setting up validation messages.
  */
 @Configuration
+@RequiredArgsConstructor
 public class ValidationMessageConfig {
 
-    /**
-     * Creates a message source bean for loading validation messages from a resource bundle.
-     *
-     * @return a ReloadableResourceBundleMessageSource bean
-     */
-    @Bean
-    public MessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageSource
-                = new ReloadableResourceBundleMessageSource();
-
-        messageSource.setBasename("classpath:messages");
-        messageSource.setDefaultEncoding("UTF-8");
-        return messageSource;
-    }
+    private final MessageSource messageSource;
 
     /**
-     * Creates a validator bean that uses the message source defined in {@link #messageSource()}.
+     * Creates a validator bean that uses the message source defined in {@link com.fitpg.config.LocaleConfig}.
      *
      * @return a LocalValidatorFactoryBean bean
      */
     @Bean
     public LocalValidatorFactoryBean getValidator() {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-        bean.setValidationMessageSource(messageSource());
+        bean.setValidationMessageSource(messageSource);
         return bean;
     }
 }

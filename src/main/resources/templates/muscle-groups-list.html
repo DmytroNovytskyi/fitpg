@@ -38,7 +38,8 @@
                                                     onchange="changePage()" class="size-select col"
                                                     id="pageOrder">
                                                 <option th:each="s : ${ {'asc', 'desc'} }" th:value="${s}"
-                                                        th:text="${s}" th:selected="${s == pageOrder}"></option>
+                                                        th:text="#{'muscleGroups.list.table.paging.pageOrder.' + ${s}}"
+                                                        th:selected="${s == pageOrder}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -52,7 +53,8 @@
                                                     onchange="changePage()" class="size-select col"
                                                     id="pageSortBy">
                                                 <option th:each="s : ${ {'id', 'name'} }" th:value="${s}"
-                                                        th:text="${s}" th:selected="${s == pageSortBy}"></option>
+                                                        th:text="#{'exerciseInfos.list.table.paging.pageSortBy.' + ${s}}"
+                                                        th:selected="${s == pageSortBy}"></option>
                                             </select>
                                         </div>
                                     </div>

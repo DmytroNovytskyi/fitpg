@@ -39,7 +39,8 @@
                                                     onchange="changePage()" class="size-select col"
                                                     id="pageOrder">
                                                 <option th:each="s : ${ {'asc', 'desc'} }" th:value="${s}"
-                                                        th:text="${s}" th:selected="${s == pageOrder}"></option>
+                                                        th:text="#{'nutrientsTracks.list.table.paging.pageOrder.' + ${s}}"
+                                                        th:selected="${s == pageOrder}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -105,17 +106,18 @@
                         <span th:text="#{nutrientsTracks.list.table.notFound}"></span>
                     </div>
                 </div>
-                <div class="col">
-                    <canvas id="caloriesTrackingChart"
+                <div class="col-5">
+                    <canvas id="caloriesTrackingChart" th:chartLabel="#{nutrientsTracks.list.calories.chart.label}"
                             th:labels="${chartLabels}" th:data-sets="${caloriesChartDataSets}">
                     </canvas>
-                    <canvas id="fatsTrackingChart"
+                    <canvas id="fatsTrackingChart" th:chartLabel="#{nutrientsTracks.list.fats.chart.label}"
                             th:labels="${chartLabels}" th:data-sets="${fatsChartDataSets}">
                     </canvas>
                     <canvas id="carbohydratesTrackingChart"
+                            th:chartLabel="#{nutrientsTracks.list.carbohydrates.chart.label}"
                             th:labels="${chartLabels}" th:data-sets="${carbohydratesChartDataSets}">
                     </canvas>
-                    <canvas id="proteinTrackingChart"
+                    <canvas id="proteinTrackingChart" th:chartLabel="#{nutrientsTracks.list.protein.chart.label}"
                             th:labels="${chartLabels}" th:data-sets="${proteinChartDataSets}">
                     </canvas>
                 </div>

@@ -39,7 +39,8 @@
                                                     onchange="changePage()" class="size-select col"
                                                     id="pageOrder">
                                                 <option th:each="s : ${ {'asc', 'desc'} }" th:value="${s}"
-                                                        th:text="${s}" th:selected="${s == pageOrder}"></option>
+                                                        th:text="#{'workouts.list.table.paging.pageOrder.' + ${s}}"
+                                                        th:selected="${s == pageOrder}"></option>
                                             </select>
                                         </div>
                                     </div>
