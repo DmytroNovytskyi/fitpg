@@ -77,7 +77,7 @@
                         </div>
                     </div>
                     <div class="row d-inline-block ps-2">
-                        <a class="btn btn-primary" role="button" th:href="@{/users/create}"
+                        <a class="btn btn-outline-primary ms-2" role="button" th:href="@{/users/create}"
                            th:text="#{users.list.table.create}"></a>
                     </div>
                     <table class="table" th:if="${users.size() > 0}">
@@ -98,12 +98,12 @@
                             <td th:text="${user.email}"></td>
                             <td th:text="${user.roles}"></td>
                             <td>
-                                <a class="btn btn-primary" th:href="@{users/{id}(id=${user.id})}"
+                                <a class="btn btn-outline-info" th:href="@{users/{id}(id=${user.id})}"
                                    th:text="#{users.list.table.edit}"></a>
                             </td>
                             <td>
                                 <form role="form" th:action="@{/users/{id}(id=${user.id})}" th:method="delete">
-                                    <button class="btn btn-primary" th:text="#{users.list.table.delete}"
+                                    <button class="btn btn-outline-danger" th:text="#{users.list.table.delete}"
                                             type="submit"></button>
                                 </form>
                             </td>

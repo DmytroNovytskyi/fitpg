@@ -77,7 +77,7 @@
                         </div>
                     </div>
                     <div class="row d-inline-block ps-2">
-                        <a class="btn btn-primary" role="button" th:href="@{/exercise-infos/create}"
+                        <a class="btn btn-outline-primary ms-2" role="button" th:href="@{/exercise-infos/create}"
                            th:text="#{exerciseInfos.list.table.create}"></a>
                     </div>
                     <table class="table" th:if="${exerciseInfos.size() > 0}">
@@ -96,13 +96,13 @@
                             <td th:text="${exerciseInfo.name}"></td>
                             <td th:text="${exerciseInfo.muscleGroups}"></td>
                             <td>
-                                <a class="btn btn-primary" th:href="@{exercise-infos/{id}(id=${exerciseInfo.id})}"
+                                <a class="btn btn-outline-info" th:href="@{exercise-infos/{id}(id=${exerciseInfo.id})}"
                                    th:text="#{exerciseInfos.list.table.edit}"></a>
                             </td>
                             <td>
                                 <form role="form" th:action="@{/exercise-infos/{id}(id=${exerciseInfo.id})}"
                                       th:method="delete">
-                                    <button class="btn btn-primary" th:text="#{exerciseInfos.list.table.delete}"
+                                    <button class="btn btn-outline-danger" th:text="#{exerciseInfos.list.table.delete}"
                                             type="submit"></button>
                                 </form>
                             </td>

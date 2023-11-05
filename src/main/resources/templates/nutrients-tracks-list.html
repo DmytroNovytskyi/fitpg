@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <div class="row d-inline-block ps-2">
-                        <a class="btn btn-primary" role="button" th:href="@{/nutrients-tracks/create}"
+                        <a class="btn btn-outline-primary ms-2" role="button" th:href="@{/nutrients-tracks/create}"
                            th:text="#{nutrientsTracks.list.table.create}"></a>
                     </div>
                     <table class="table" th:if="${nutrientsTracks.size() > 0}">
@@ -86,7 +86,7 @@
                             <td th:text="${nutrientsTrack.protein}"></td>
                             <td th:text="${nutrientsTrack.calories}"></td>
                             <td>
-                                <a class="btn btn-primary"
+                                <a class="btn btn-outline-info"
                                    th:href="@{nutrients-tracks/{id}(id=${nutrientsTrack.id})}"
                                    th:text="#{nutrientsTracks.list.table.edit}"></a>
                             </td>
@@ -94,7 +94,7 @@
                                 <form role="form"
                                       th:action="@{/nutrients-tracks/{id}(id=${nutrientsTrack.id})}"
                                       th:method="delete">
-                                    <button class="btn btn-primary"
+                                    <button class="btn btn-outline-danger"
                                             th:text="#{nutrientsTracks.list.table.delete}"
                                             type="submit"></button>
                                 </form>

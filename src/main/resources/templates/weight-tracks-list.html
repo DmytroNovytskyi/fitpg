@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <div class="row d-inline-block ps-2">
-                        <a class="btn btn-primary" role="button" th:href="@{/weight-tracks/create}"
+                        <a class="btn btn-outline-primary ms-2" role="button" th:href="@{/weight-tracks/create}"
                            th:text="#{weightTracks.list.table.create}"></a>
                     </div>
                     <table class="table" th:if="${weightTracks.size() > 0}">
@@ -80,7 +80,7 @@
                             <td th:text="${#dates.format(weightTrack.date, 'dd-MM-yyyy')}"></td>
                             <td th:text="${weightTrack.weight}"></td>
                             <td>
-                                <a class="btn btn-primary"
+                                <a class="btn btn-outline-info"
                                    th:href="@{weight-tracks/{id}(id=${weightTrack.id})}"
                                    th:text="#{weightTracks.list.table.edit}"></a>
                             </td>
@@ -88,7 +88,7 @@
                                 <form role="form"
                                       th:action="@{/weight-tracks/{id}(id=${weightTrack.id})}"
                                       th:method="delete">
-                                    <button class="btn btn-primary"
+                                    <button class="btn btn-outline-danger"
                                             th:text="#{weightTracks.list.table.delete}"
                                             type="submit"></button>
                                 </form>
