@@ -45,6 +45,10 @@ public class UserEntity {
     @ToString.Exclude
     private List<WeightTrack> weightTracks;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<NutrientsTrack> nutrientsTracks;
+
     /**
      * Checks if the specified object is equal to this user.
      *
