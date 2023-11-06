@@ -25,25 +25,59 @@
                             <nav th:replace="fragments/paging-bar :: paging-bar('/exercise-infos')"
                                  th:if="${totalPages > 0}"></nav>
                         </div>
-                        <div class="col">
-                            <form th:action="@{/exercise-infos}" id="pageSizeForm">
-                                <div class="input-group mt-2 justify-content-end">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="pageSize"
-                                               th:text="#{exerciseInfos.list.table.paging.pageSize}"></label>
+                        <div class="col-3">
+                            <form th:action="@{/exercise-infos}" id="pageForm">
+                                <div class="form-group mt-2 row">
+                                    <div class="row justify-content-end">
+                                        <div class="input-group">
+                                            <div class="col">
+                                                <label class="input-group-text" for="pageOrder"
+                                                       th:text="#{exerciseInfos.list.table.paging.pageOrder}"></label>
+                                            </div>
+                                            <select form="pageForm" name="order" th:value="${pageOrder}"
+                                                    onchange="changePage()" class="size-select col"
+                                                    id="pageOrder">
+                                                <option th:each="s : ${ {'asc', 'desc'} }" th:value="${s}"
+                                                        th:text="#{'exerciseInfos.list.table.paging.pageOrder.' + ${s}}"
+                                                        th:selected="${s == pageOrder}"></option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <select form="pageSizeForm" name="size" th:value="${pageSize}"
-                                            onchange="changePageSize()" class="size-select"
-                                            id="pageSize">
-                                        <option th:each="s : ${ {5, 10, 20} }" th:value="${s}"
-                                                th:text="${s}" th:selected="${s == pageSize}"></option>
-                                    </select>
+                                    <div class="row justify-content-end">
+                                        <div class="input-group">
+                                            <div class="col">
+                                                <label class="input-group-text" for="pageSortBy"
+                                                       th:text="#{exerciseInfos.list.table.paging.pageSortBy}"></label>
+                                            </div>
+                                            <select form="pageForm" name="sortBy" th:value="${pageSortBy}"
+                                                    onchange="changePage()" class="size-select col"
+                                                    id="pageSortBy">
+                                                <option th:each="s : ${ {'id', 'name'} }" th:value="${s}"
+                                                        th:text="#{'exerciseInfos.list.table.paging.pageSortBy.' + ${s}}"
+                                                        th:selected="${s == pageSortBy}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-end">
+                                        <div class="input-group">
+                                            <div class="col">
+                                                <label class="input-group-text" for="pageSize"
+                                                       th:text="#{exerciseInfos.list.table.paging.pageSize}"></label>
+                                            </div>
+                                            <select form="pageForm" name="size" th:value="${pageSize}"
+                                                    onchange="changePage()" class="size-select col"
+                                                    id="pageSize">
+                                                <option th:each="s : ${ {5, 10, 20} }" th:value="${s}"
+                                                        th:text="${s}" th:selected="${s == pageSize}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                     <div class="row d-inline-block ps-2">
-                        <a class="btn btn-primary" role="button" th:href="@{/exercise-infos/create}"
+                        <a class="btn btn-outline-primary ms-2" role="button" th:href="@{/exercise-infos/create}"
                            th:text="#{exerciseInfos.list.table.create}"></a>
                     </div>
                     <table class="table" th:if="${exerciseInfos.size() > 0}">
@@ -62,13 +96,13 @@
                             <td th:text="${exerciseInfo.name}"></td>
                             <td th:text="${exerciseInfo.muscleGroups}"></td>
                             <td>
-                                <a class="btn btn-primary" th:href="@{exercise-infos/{id}(id=${exerciseInfo.id})}"
+                                <a class="btn btn-outline-info" th:href="@{exercise-infos/{id}(id=${exerciseInfo.id})}"
                                    th:text="#{exerciseInfos.list.table.edit}"></a>
                             </td>
                             <td>
                                 <form role="form" th:action="@{/exercise-infos/{id}(id=${exerciseInfo.id})}"
                                       th:method="delete">
-                                    <button class="btn btn-primary" th:text="#{exerciseInfos.list.table.delete}"
+                                    <button class="btn btn-outline-danger" th:text="#{exerciseInfos.list.table.delete}"
                                             type="submit"></button>
                                 </form>
                             </td>

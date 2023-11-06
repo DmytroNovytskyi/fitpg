@@ -47,6 +47,8 @@ public class WeightTrackController {
         model.addAttribute("weightTracks", weightTrackDtoPage.getContent());
         model.addAttribute("currentPage", weightTrackDtoPage.getNumber() + 1);
         model.addAttribute("totalPages", weightTrackDtoPage.getTotalPages());
+        model.addAttribute("pageOrder", order);
+        model.addAttribute("pageSortBy", sortBy);
         model.addAttribute("pageSize", weightTrackDtoPage.getSize());
         mapChartData(model, weightTrackDtoPage);
         return "weight-tracks-list";

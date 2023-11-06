@@ -26,24 +26,44 @@
                                  th:if="${totalPages > 0}"></nav>
                         </div>
                         <div class="col">
-                            <form th:action="@{/nutrients-tracks}" id="pageSizeForm">
-                                <div class="input-group mt-2 justify-content-end">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="pageSize"
-                                               th:text="#{nutrientsTracks.list.table.paging.pageSize}"></label>
+                            <form th:action="@{/nutrients-tracks}" id="pageForm">
+                                <input name="sortBy" th:value="${pageSortBy}" type="hidden">
+                                <div class="form-group mt-2 row">
+                                    <div class="row justify-content-end">
+                                        <div class="input-group">
+                                            <div class="col">
+                                                <label class="input-group-text" for="pageOrder"
+                                                       th:text="#{nutrientsTracks.list.table.paging.pageOrder}"></label>
+                                            </div>
+                                            <select form="pageForm" name="order" th:value="${pageOrder}"
+                                                    onchange="changePage()" class="size-select col"
+                                                    id="pageOrder">
+                                                <option th:each="s : ${ {'asc', 'desc'} }" th:value="${s}"
+                                                        th:text="#{'nutrientsTracks.list.table.paging.pageOrder.' + ${s}}"
+                                                        th:selected="${s == pageOrder}"></option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <select form="pageSizeForm" name="size" th:value="${pageSize}"
-                                            onchange="changePageSize()" class="size-select"
-                                            id="pageSize">
-                                        <option th:each="s : ${ {7, 30, 60, 90, 180, 365} }" th:value="${s}"
-                                                th:text="${s}" th:selected="${s == pageSize}"></option>
-                                    </select>
+                                    <div class="row justify-content-end">
+                                        <div class="input-group">
+                                            <div class="col">
+                                                <label class="input-group-text" for="pageSize"
+                                                       th:text="#{nutrientsTracks.list.table.paging.pageSize}"></label>
+                                            </div>
+                                            <select form="pageForm" name="size" th:value="${pageSize}"
+                                                    onchange="changePage()" class="size-select col"
+                                                    id="pageSize">
+                                                <option th:each="s : ${ {7, 30, 60, 90, 180, 365} }" th:value="${s}"
+                                                        th:text="${s}" th:selected="${s == pageSize}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                     <div class="row d-inline-block ps-2">
-                        <a class="btn btn-primary" role="button" th:href="@{/nutrients-tracks/create}"
+                        <a class="btn btn-outline-primary ms-2" role="button" th:href="@{/nutrients-tracks/create}"
                            th:text="#{nutrientsTracks.list.table.create}"></a>
                     </div>
                     <table class="table" th:if="${nutrientsTracks.size() > 0}">
@@ -66,7 +86,7 @@
                             <td th:text="${nutrientsTrack.protein}"></td>
                             <td th:text="${nutrientsTrack.calories}"></td>
                             <td>
-                                <a class="btn btn-primary"
+                                <a class="btn btn-outline-info"
                                    th:href="@{nutrients-tracks/{id}(id=${nutrientsTrack.id})}"
                                    th:text="#{nutrientsTracks.list.table.edit}"></a>
                             </td>
@@ -74,7 +94,7 @@
                                 <form role="form"
                                       th:action="@{/nutrients-tracks/{id}(id=${nutrientsTrack.id})}"
                                       th:method="delete">
-                                    <button class="btn btn-primary"
+                                    <button class="btn btn-outline-danger"
                                             th:text="#{nutrientsTracks.list.table.delete}"
                                             type="submit"></button>
                                 </form>
@@ -86,17 +106,18 @@
                         <span th:text="#{nutrientsTracks.list.table.notFound}"></span>
                     </div>
                 </div>
-                <div class="col">
-                    <canvas id="caloriesTrackingChart"
+                <div class="col-5">
+                    <canvas id="caloriesTrackingChart" th:chartLabel="#{nutrientsTracks.list.calories.chart.label}"
                             th:labels="${chartLabels}" th:data-sets="${caloriesChartDataSets}">
                     </canvas>
-                    <canvas id="fatsTrackingChart"
+                    <canvas id="fatsTrackingChart" th:chartLabel="#{nutrientsTracks.list.fats.chart.label}"
                             th:labels="${chartLabels}" th:data-sets="${fatsChartDataSets}">
                     </canvas>
                     <canvas id="carbohydratesTrackingChart"
+                            th:chartLabel="#{nutrientsTracks.list.carbohydrates.chart.label}"
                             th:labels="${chartLabels}" th:data-sets="${carbohydratesChartDataSets}">
                     </canvas>
-                    <canvas id="proteinTrackingChart"
+                    <canvas id="proteinTrackingChart" th:chartLabel="#{nutrientsTracks.list.protein.chart.label}"
                             th:labels="${chartLabels}" th:data-sets="${proteinChartDataSets}">
                     </canvas>
                 </div>

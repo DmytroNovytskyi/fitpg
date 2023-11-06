@@ -30,9 +30,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers("/users/**", "/exercise-infos/**", "/muscle-groups/**")
                         .hasAuthority("ADMIN")
-                        .requestMatchers("/workouts/**", "/exercises/**", "/weight-tracks/**", "/nutrients-tracks/**")
+                        .requestMatchers("/workouts/**", "/exercises/**", "/weight-tracks/**",
+                                "/nutrients-tracks/**")
                         .hasAuthority("USER")
-                        .requestMatchers("/login", "/logout", "/register", "/home", "/error", "/css/**", "/js/**")
+                        .requestMatchers("/login", "/logout", "/register", "/home", "/error",
+                                "/css/**", "/js/**", "/assets/**")
                         .permitAll())
                 .formLogin(form -> form
                         .loginPage("/login")

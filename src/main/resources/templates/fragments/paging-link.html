@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
 <a th:fragment="paging-link(link, pageNum, label, tooltip)" class="page-link"
-   th:href="@{${link} + '?page=' + ${pageNum} + '&size=' + ${pageSize}}"
+   th:href="@{${link} + '?page=' + ${pageNum} + '&order=' + ${pageOrder} + '&sortBy=' + ${pageSortBy} + '&size=' + ${pageSize}}"
    th:title="${tooltip}" rel="tooltip">
     [[${label}]]
 </a>

@@ -503,7 +503,7 @@ $(document).ready(function () {
             labels: chart.attr('labels').replace('[', '').replace(']', '').split(','),
             datasets: [
                 {
-                    label: "Weight",
+                    label: chart.attr('chartLabel'),
                     data: chart.attr('data-sets').replace('[', '').replace(']', '').split(','),
                     backgroundColor: 'rgba(114,53,184,0.6)'
                 }
@@ -522,7 +522,7 @@ $(document).ready(function () {
             labels: chart.attr('labels').replace('[', '').replace(']', '').split(','),
             datasets: [
                 {
-                    label: "Fats",
+                    label: chart.attr('chartLabel'),
                     data: chart.attr('data-sets').replace('[', '').replace(']', '').split(','),
                     backgroundColor: 'rgba(236,196,192,0.6)'
                 }
@@ -541,7 +541,7 @@ $(document).ready(function () {
             labels: chart.attr('labels').replace('[', '').replace(']', '').split(','),
             datasets: [
                 {
-                    label: "Carbohydrates",
+                    label: chart.attr('chartLabel'),
                     data: chart.attr('data-sets').replace('[', '').replace(']', '').split(','),
                     backgroundColor: 'rgba(256,236,196,0.6)'
                 }
@@ -560,7 +560,7 @@ $(document).ready(function () {
             labels: chart.attr('labels').replace('[', '').replace(']', '').split(','),
             datasets: [
                 {
-                    label: "Protein",
+                    label: chart.attr('chartLabel'),
                     data: chart.attr('data-sets').replace('[', '').replace(']', '').split(','),
                     backgroundColor: 'rgba(200,220,252,0.6)'
                 }
@@ -579,7 +579,7 @@ $(document).ready(function () {
             labels: chart.attr('labels').replace('[', '').replace(']', '').split(','),
             datasets: [
                 {
-                    label: "Calories",
+                    label: chart.attr('chartLabel'),
                     data: chart.attr('data-sets').replace('[', '').replace(']', '').split(','),
                     backgroundColor: 'rgba(200,228,204,0.6)'
                 }
@@ -588,7 +588,14 @@ $(document).ready(function () {
     });
 })
 
-//Change page size
-function changePageSize() {
-    $("#pageSizeForm").submit();
+//Change page
+function changePage() {
+    $("#pageForm").submit();
+}
+
+//Change locale
+function changeLocale(locale) {
+    const parser = new URL(window.location);
+    parser.searchParams.set('locale', locale);
+    window.location = parser.href;
 }

@@ -10,7 +10,7 @@
 <body class="d-flex">
 <main class="flex-shrink-0">
     <section class="py-5 min-vh-100" layout:fragment="body">
-        <div class="container">
+        <div class="container w-50">
             <div class="text-center mb-5">
                 <h1 class="fw-bolder" th:text="#{nutrientsTracks.create.form.title}"></h1>
             </div>
@@ -72,7 +72,7 @@
                     <div class="text-danger d-none" id="nutrients-tracks-create-protein-not-null"
                          th:text="#{nutrientsTrack.protein.notNull}" th:unless="${#fields.hasErrors('protein')}"></div>
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-2">
                     <label for="calories" th:text="#{nutrientsTracks.create.form.calories}"></label>
                     <input class="form-control"
                            id="calories"

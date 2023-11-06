@@ -10,7 +10,7 @@
 <body class="d-flex">
 <main class="flex-shrink-0">
     <section class="py-5 min-vh-100" layout:fragment="body">
-        <div class="container">
+        <div class="container w-50">
             <div class="text-center mb-5">
                 <h1 class="fw-bolder" th:text="#{weightTracks.create.form.title}"></h1>
             </div>
@@ -34,7 +34,7 @@
                     <div class="text-danger d-none" id="weight-tracks-create-date-not-null"
                          th:text="#{weightTrack.date.notNull}" th:unless="${#fields.hasErrors('date')}"></div>
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-2">
                     <label for="weight" th:text="#{weightTracks.create.form.weight}"></label>
                     <input class="form-control"
                            id="weight"

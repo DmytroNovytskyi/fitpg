@@ -5,10 +5,14 @@ plugins {
 }
 
 group 'com.fitpg'
-version '1.0.0'
+version '3.0.0'
 
 repositories {
     mavenCentral()
+}
+
+springBoot {
+    mainClass = 'com.fitpg.Application'
 }
 
 dependencies {
